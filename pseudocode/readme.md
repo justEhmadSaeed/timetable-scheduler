@@ -23,7 +23,7 @@ s1,s2,s3, ...sn: Data Structure for subjects
 
 creditHr: credit hours of each Subject
 
-lecture: The lecture distribution can be as follows:
+lectures: The lecture distribution can be as follows:
 
    class: ci, teacher: tj, subject: sk, lecturePattern: [1, 1, 1]
    class: ci, teacher: tj, subject: sk, lecturePattern: [2, 1]
@@ -63,7 +63,7 @@ procedure generateTimeTable
                     Next Iteration
 
                     if SP(teacher, class, Period[d, p])
-                        consecutiveLecture = longestLecture in lecturePattern
+                        consecutiveLecture = longestLecture in lectures[i].lecturePattern
                         if(consecutiveLecture > 1)
                             if(Slots are availabe for next consecutiveLectures - 1 )
                                 AssignLectureInFinal_tt(teacher, class, Periods) for consecutiveLectures;

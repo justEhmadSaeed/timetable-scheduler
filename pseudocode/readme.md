@@ -202,7 +202,40 @@ Total Time Complexity of this Algorithm can be summed up as follows:
 
  where p is periods/day
  d is working days in a week
- c is the total number of classes 
+ c is the total number of classes
  t is the total number of teachers
 
 ```
+
+## Correctness
+
+### Loop Invariant
+
+- remainingLectures = totalLectures - assignedLectures
+
+### Base Case
+
+- Before the first iteration, we say that no lecture was assigned, so remaining lectures is unaltered.
+- After first iteration, first lecture will be assigned & it will be decremented from the remaining lectures
+
+      remainingLectures[teacher, class]-=1
+
+### Inductive Case
+
+- Suppose we say that algorithm is true when k assigned lectures have been assigned, so remaining lectures are total lectures - k
+- In k + 1 lectures assigned, one lecture will be decremented from remaining lectures according to base case, so:
+
+```
+remainingLectures[k] = totalLectures - k
+
+for k + 1 assigned lecture
+remainingLectures[k + 1] = totalLectures - (k + 1)
+remainingLectures[k + 1] = (totalLectures - k) - 1
+remainingLectures[k + 1] = remainingLectures[k] - 1
+```
+
+- So for every assigned lecture, it will be deducted from the remainingLectures array
+
+### Termination
+
+- After the last iteration, it is necessary for our algorthim to assign all the lectures in the remaining lectures, there should be no lectures in the remainingLectures array

@@ -117,39 +117,41 @@ const Scheduling = () => {
   for (let per = 0; per < period.p; per++) {
     for (let day = 0; day < period.d; day++) {
       c.forEach((clas, cIndex) => {
-        t.forEach((teacher, tIndex) => {
-          let valid = teacher.assigned.findIndex((e) => e.class === clas);
-          if (
-            valid === -1 ||
-            t_available[tIndex][day].some((e) => e === clas) ||
-            remainingLectures[cIndex][tIndex] === 0
-          ) {
-            return;
-          }
-
-          if (isSchedulePossible(tIndex, cIndex, { d: day, p: per })) {
-            let lectureCount = 1;
-            let longestLecture = teacher.assigned[valid].lecture[0];
+        if (final_tt[cIndex][day][per] === 0)
+          for (let teacher = 0; teacher < t.length; teacher++) {
+            let valid = t[teacher].assigned.findIndex((e) => e.class === clas);
             if (
-              remainingLectures[cIndex][tIndex] > 1 &&
-              longestLecture > 1 &&
-              isSchedulePossible(tIndex, cIndex, { d: day, p: per + 1 })
+              valid === -1 ||
+              t_available[teacher][day].some((e) => e === clas) ||
+              remainingLectures[cIndex][teacher] === 0
             ) {
-              lectureCount = 2;
-              if (
-                longestLecture > 2 &&
-                isSchedulePossible(tIndex, cIndex, { d: day, p: per + 2 })
-              )
-                lectureCount = 3;
+              continue;
             }
-            for (let i = 0; i < lectureCount; ++i) {
-              final_tt[cIndex][day][per + i] = teacher.name;
-              c_available[cIndex][day][per + i] = teacher.name;
-              t_available[tIndex][day][per + i] = clas;
-              remainingLectures[cIndex][tIndex]--;
+
+            if (isSchedulePossible(teacher, cIndex, { d: day, p: per })) {
+              let lectureCount = 1;
+              let longestLecture = t[teacher].assigned[valid].lecture[0];
+              if (
+                remainingLectures[cIndex][teacher] > 1 &&
+                longestLecture > 1 &&
+                isSchedulePossible(teacher, cIndex, { d: day, p: per + 1 })
+              ) {
+                lectureCount = 2;
+                if (
+                  longestLecture > 2 &&
+                  isSchedulePossible(teacher, cIndex, { d: day, p: per + 2 })
+                )
+                  lectureCount = 3;
+              }
+              for (let i = 0; i < lectureCount; ++i) {
+                final_tt[cIndex][day][per + i] = t[teacher].name;
+                c_available[cIndex][day][per + i] = t[teacher].name;
+                t_available[teacher][day][per + i] = clas;
+                remainingLectures[cIndex][teacher]--;
+              }
+              break;
             }
           }
-        });
       });
     }
   }

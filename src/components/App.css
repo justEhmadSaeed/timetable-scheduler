@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+.firebaseUI {
+  display: flex;
+  justify-content: center;
+}

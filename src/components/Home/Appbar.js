@@ -11,6 +11,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import firebase from "firebase";
 
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -87,7 +88,7 @@ export default function PrimaryAppBar() {
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            Activity Scheduling
+            Activity Scheduler
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

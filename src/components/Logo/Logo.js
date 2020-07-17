@@ -3,6 +3,7 @@ import Tilt from "react-tilt";
 import "./Logo.css";
 import activity from "./activity.png";
 
+
 const Logo = () => {
   return (
     <div

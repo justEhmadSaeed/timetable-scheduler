@@ -3,8 +3,8 @@ import "./App.css";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase";
 import Logo from "./Logo/Logo";
-import "tachyons";
 import Particles from "react-particles-js";
+import "tachyons";
 import Home from "./Home/home";
 
 firebase.initializeApp({

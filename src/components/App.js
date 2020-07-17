@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import "./App.css";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase";
-import { Button } from "@material-ui/core";
 import Logo from "./Logo/Logo";
-import 'tachyons';
+import "tachyons";
+import Particles from "react-particles-js";
+import Home from "./Home/home";
 
 firebase.initializeApp({
   apiKey: "AIzaSyBwPBLFoMMqwyUJcJewqLip4guij7CNjZg",
@@ -12,6 +13,18 @@ firebase.initializeApp({
   databaseURL: "https://activity-scheduling-d6be4.firebaseio.com",
   projectId: "activity-scheduling-d6be4",
 });
+
+const particlesOptions = {
+  particles: {
+    number: {
+      value: 100,
+      density: {
+        enable: true,
+        value_area: 700,
+      },
+    },
+  },
+};
 
 class App extends Component {
   state = { isSignedIn: false };
@@ -37,19 +50,10 @@ class App extends Component {
     return (
       <div className="App">
         {this.state.isSignedIn ? (
-          <span>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              onClick={() => firebase.auth().signOut()}
-            >
-              Sign Out
-            </Button>
-            <h1>Welcome {firebase.auth().currentUser.displayName}</h1>
-          </span>
+          <Home />
         ) : (
           <div>
+            <Particles className="particles" params={particlesOptions} />
             <Logo></Logo>
             <div className="firebaseUI">
               <StyledFirebaseAuth

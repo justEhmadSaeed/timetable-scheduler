@@ -11,8 +11,8 @@ const Logo = () => {
     >
       <Tilt
         className="Tilt br2 shadow-2"
-        options={{ max: 35 }}
-        style={{ height: 400, width: 800 }}
+        options={{ max: 25 }}
+        style={{ height: 400, width: 600 }}
       >
         <div className="Tilt-inner pa3">
           <img

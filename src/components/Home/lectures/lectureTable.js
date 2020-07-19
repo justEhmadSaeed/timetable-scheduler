@@ -189,7 +189,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Subject Table
+          Lecture Table
         </Typography>
       )}
 
@@ -240,7 +240,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// Subject Table Export
+// Lecture Table Export
 export default function LectureTable({ lectures, setLectures }) {
   const rows = lectures
     ? lectures.map((lecture) =>

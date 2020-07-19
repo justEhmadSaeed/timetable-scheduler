@@ -18,8 +18,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-function createData(name, code, contantHrs) {
-  return { name, code, contantHrs };
+function createData(day, lectureCount) {
+  return { day, lectureCount };
 }
 
 function descendingComparator(a, b, orderBy) {
@@ -50,17 +50,16 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "name",
+    id: "day",
     numeric: false,
     disablePadding: true,
-    label: "Title",
+    label: "Day",
   },
-  { id: "code", numeric: true, disablePadding: false, label: "Code" },
   {
-    id: "contantHrs",
+    id: "lectureCount",
     numeric: true,
     disablePadding: false,
-    label: "Contact Hrs",
+    label: "Lectures",
   },
 ];
 
@@ -147,17 +146,21 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected, selected, setSelected, subjects, setSubjects } = props;
+  const {
+    numSelected,
+    selected,
+    setSelected,
+    workingTime,
+    setworkingTime,
+  } = props;
 
   const deleteRow = () => {
-    let temp = [...subjects];
-
+    let temp = { ...workingTime };
+    console.log(selected);
     selected.forEach((element) => {
-      let target = temp.findIndex((e) => e[1] === element);
-      temp.splice(target, 1);
+      temp[element] = 0;
     });
-
-    setSubjects(temp);
+    setworkingTime(temp);
     setSelected([]);
   };
 
@@ -183,7 +186,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Subject Table
+          Section Table
         </Typography>
       )}
 
@@ -204,8 +207,8 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
   selected: PropTypes.array,
   setSelected: PropTypes.func,
-  subjects: PropTypes.array,
-  setSubjects: PropTypes.func,
+  workingTime: PropTypes.object,
+  setworkingTime: PropTypes.func,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -234,16 +237,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// Subject Table Export
-
-export default function SubjectTable({ subjects, setSubjects }) {
-  const rows = subjects
-    ? subjects.map((subject) => createData(subject[0], subject[1], subject[2]))
-    : [createData("", "", "")];
-
+// Section Table Export Function
+export default function WorkingtimeTable({ workingTime, setworkingTime }) {
+  const rows = Object.entries(workingTime)
+    .filter((e) => e[1] !== 0)
+    .map((time) => createData(time[0], time[1]));
+  
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("code");
+  const [orderBy, setOrderBy] = React.useState("lectureCount");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -256,19 +258,19 @@ export default function SubjectTable({ subjects, setSubjects }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.code);
+      const newSelecteds = rows.map((n) => n.day);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, code) => {
-    const selectedIndex = selected.indexOf(code);
+  const handleClick = (event, element) => {
+    const selectedIndex = selected.indexOf(element);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, code);
+      newSelected = newSelected.concat(selected, element);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -292,7 +294,7 @@ export default function SubjectTable({ subjects, setSubjects }) {
     setPage(0);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (element) => selected.indexOf(element) !== -1;
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -304,8 +306,8 @@ export default function SubjectTable({ subjects, setSubjects }) {
           numSelected={selected.length}
           selected={selected}
           setSelected={setSelected}
-          subjects={subjects}
-          setSubjects={setSubjects}
+          workingTime={workingTime}
+          setworkingTime={setworkingTime}
         />
         <TableContainer>
           <Table
@@ -327,17 +329,17 @@ export default function SubjectTable({ subjects, setSubjects }) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.code);
+                  const isItemSelected = isSelected(row.day);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.code)}
+                      onClick={(event) => handleClick(event, row.day)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.code}
+                      key={row.day}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -347,7 +349,7 @@ export default function SubjectTable({ subjects, setSubjects }) {
                         />
                       </TableCell>
                       <TableCell align="left" padding="none">
-                        {row.name}
+                        {row.day}
                       </TableCell>
                       <TableCell
                         component="th"
@@ -355,9 +357,8 @@ export default function SubjectTable({ subjects, setSubjects }) {
                         align="right"
                         scope="row"
                       >
-                        {row.code}
+                        {row.lectureCount}
                       </TableCell>
-                      <TableCell align="right">{row.contantHrs}</TableCell>
                     </TableRow>
                   );
                 })}

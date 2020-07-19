@@ -49,9 +49,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {/* {this.state.isSignedIn ? ( */}
-        <Home />
-        {/* ) : (
+        {this.state.isSignedIn ? (
+          <Home />
+        ) : (
           <div>
             <Particles className="particles" params={particlesOptions} />
             <Logo></Logo>
@@ -62,8 +62,7 @@ class App extends Component {
               />
             </div>
           </div>
-        )
-        } */}
+        )}
       </div>
     );
   }

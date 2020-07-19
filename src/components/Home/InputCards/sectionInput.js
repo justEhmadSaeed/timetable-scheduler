@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Card, CardContent, Button } from "@material-ui/core";
-import "./subjectInput.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {

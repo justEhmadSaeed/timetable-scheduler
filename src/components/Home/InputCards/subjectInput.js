@@ -7,7 +7,6 @@ import {
   Button,
   MenuItem,
 } from "@material-ui/core";
-import "./subjectInput.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {

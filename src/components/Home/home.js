@@ -7,15 +7,17 @@ import TeacherInput from "./InputCards/teacherInput";
 import SubjectTable from "./Tables/subjectTable";
 import SectionTable from "./Tables/sectionTable";
 import TeacherTable from "./Tables/teacherTable";
+import LectureInput from "./lectures/lectureInput";
+import LectureTable from "./lectures/lectureTable";
+import "./home.css";
 
 const useStyles = makeStyles((theme) => ({
   cardHolder: {
     display: "flex",
     flexFlow: "row wrap",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     marginTop: 10,
   },
-  card: {},
 }));
 
 const Exsubjects = [
@@ -33,6 +35,11 @@ const worthyTeachers = [
   ["Dr. Awais", "102"],
   ["Dr. Afzal", "103"],
 ];
+const ExLectures = [
+  ["Dr. Fareed Jafri", "CS18A", "CS101", "2 - 1", "Dr. Fareed JafriCS18A"],
+  ["Dr. Awais", "CS18B", "CS301", "1 - 1 - 1", "Dr. AwaisCS18B"],
+  ["Dr. Afzal", "CS18C", "CS101L", "1 - 1", "Dr. AfzalCS18C"],
+];
 
 const Home = () => {
   const classes = useStyles();
@@ -40,10 +47,12 @@ const Home = () => {
   const [subjects, setSubjects] = React.useState(Exsubjects);
   const [sections, setSections] = React.useState(ExSections);
   const [teachers, setTeachers] = React.useState(worthyTeachers);
+  const [lectures, setLectures] = React.useState(ExLectures);
 
   console.log(subjects);
   console.log(sections);
   console.log(teachers);
+  console.log(lectures);
   return (
     <div>
       <PrimaryAppBar />
@@ -68,6 +77,18 @@ const Home = () => {
         <SubjectTable subjects={subjects} setSubjects={setSubjects} />
         <SectionTable sections={sections} setSections={setSections} />
         <TeacherTable teachers={teachers} setTeachers={setTeachers} />
+      </div>
+      <div className={classes.cardHolder}>
+        <LectureInput
+          lectures={lectures}
+          setLectures={setLectures}
+          subjects={subjects}
+          sections={sections}
+          teachers={teachers}
+        />
+      </div>
+      <div className={classes.cardHolder}>
+        <LectureTable lectures={lectures} setLectures={setLectures} />
       </div>
     </div>
   );

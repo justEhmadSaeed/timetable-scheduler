@@ -20,7 +20,10 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     margin: 5,
   },
-  add: {
+  hrs: {
+    margin: "5% 10%",
+  },
+  hours: {
     display: "flex",
     justifyContent: "center",
     alignItems: "baseline",
@@ -35,11 +38,13 @@ export default function SubjectInput({ subjects, setSubjects }) {
 
   const [title, setTitle] = React.useState("");
   const [code, setCode] = React.useState("");
-  const [hrs, setCreditHrs] = React.useState("");
+  const [contactHrs, setcontantHrs] = React.useState("");
+  const [creditHrs, setcreditHrs] = React.useState("");
 
   const [titleError, setTitleError] = React.useState("");
   const [codeError, setCodeError] = React.useState("");
-  const [creditHrsError, setCreditHrsError] = React.useState("");
+  const [contantHrsError, setcontantHrsError] = React.useState("");
+  const [creditHrsError, setcreditHrsError] = React.useState("");
 
   const titleChange = (event) => {
     setTitle(event.target.value);
@@ -47,38 +52,47 @@ export default function SubjectInput({ subjects, setSubjects }) {
   const codeChange = (event) => {
     setCode(event.target.value);
   };
-  const hrsChange = (event) => {
-    setCreditHrs(event.target.value);
+  const contacthrsChange = (event) => {
+    setcontantHrs(event.target.value);
+  };
+  const creditrsChange = (event) => {
+    setcreditHrs(event.target.value);
   };
   const setRequiredError = () => {
     !title ? setTitleError("Required") : setTitleError("");
     !code ? setCodeError("Required") : setCodeError("");
-    !hrs ? setCreditHrsError("Required") : setCreditHrsError("");
+    !contactHrs ? setcontantHrsError("Required") : setcontantHrsError("");
+    !creditHrs ? setcreditHrsError("Required") : setcreditHrsError("");
   };
   const setEmptyTextfields = () => {
     setTitle("");
     setCode("");
-    setCreditHrs("");
+    setcontantHrs("");
+    setcreditHrs("");
 
     setTitleError("");
     setCodeError("");
-    setCreditHrsError("");
+    setcontantHrsError("");
+    setcreditHrsError("");
   };
   const addButton = () => {
     let temp = [...subjects];
-    if (title && code && hrs) {
-      if (temp) {
-        if (temp.findIndex((e) => e[1] === code) === -1)
-          temp.push([title, code, hrs]);
-        else {
-          setRequiredError();
-          setCodeError("Subject already exists");
-          return;
-        }
-      } else temp = [[title, code, hrs]];
-
-      setSubjects(temp);
-      setEmptyTextfields();
+    if (title && code && contactHrs && creditHrs) {
+      if (creditHrs <= contactHrs) {
+        if (temp) {
+          if (temp.findIndex((e) => e[1] === code) === -1)
+            temp.push([title, code, contactHrs, creditHrs]);
+          else {
+            setRequiredError();
+            setCodeError("Subject already exists");
+            return;
+          }
+        } else temp = [[title, code, contactHrs, creditHrs]];
+        setSubjects(temp);
+        setEmptyTextfields();
+      } else {
+        setcreditHrsError("Credits hrs must !> contact hrs");
+      }
     } else {
       setRequiredError();
     }
@@ -113,18 +127,18 @@ export default function SubjectInput({ subjects, setSubjects }) {
             helperText={codeError}
           />
         </div>
-        <div className={classes.add}>
+        <div className={classes.hours}>
           <TextField
             type="number"
-            className={classes.textField}
-            id="outlined-number"
+            className={classes.hrs}
+            id="credit-hours"
             label="Credit Hours"
             select
             required
             error={!!creditHrsError}
             helperText={creditHrsError}
-            onChange={hrsChange}
-            value={hrs}
+            onChange={creditrsChange}
+            value={creditHrs}
             InputLabelProps={{
               shrink: true,
             }}
@@ -136,16 +150,38 @@ export default function SubjectInput({ subjects, setSubjects }) {
               </MenuItem>
             ))}
           </TextField>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            size="medium"
-            onClick={addButton}
+          <TextField
+            type="number"
+            className={classes.hrs}
+            id="contact-hours"
+            label="Contact Hours"
+            select
+            required
+            error={!!contantHrsError}
+            helperText={contantHrsError}
+            onChange={contacthrsChange}
+            value={contactHrs}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            variant="outlined"
           >
-            + Add Subject
-          </Button>
+            {[1, 2, 3].map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
         </div>
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          size="medium"
+          onClick={addButton}
+        >
+          + Add Subject
+        </Button>
       </CardContent>
     </Card>
   );

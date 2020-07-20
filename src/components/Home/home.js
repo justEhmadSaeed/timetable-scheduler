@@ -9,6 +9,9 @@ import SectionTable from "./Tables/sectionTable";
 import TeacherTable from "./Tables/teacherTable";
 import LectureInput from "./lectures/lectureInput";
 import LectureTable from "./lectures/lectureTable";
+import WorkingtimeInput from "./InputCards/workingtimeInput";
+import WorkingtimeTable from "./Tables/workingtimeTable";
+import { Button } from "@material-ui/core";
 import "./home.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,12 +21,15 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-evenly",
     marginTop: 10,
   },
+  genButton: {
+    marginBottom: 25,
+  },
 }));
 
 const Exsubjects = [
-  ["DBMS", "CS101", 3],
-  ["AOA", "CS301", 3],
-  ["DBMS Lab", "CS101L", 2],
+  ["DBMS", "CS101", 3, 3],
+  ["AOA", "CS301", 3, 3],
+  ["DBMS Lab", "CS101L", 2, 1],
 ];
 const ExSections = [
   ["Section A 18", "CS18A"],
@@ -41,6 +47,9 @@ const ExLectures = [
   ["Dr. Afzal", "CS18C", "CS101L", "1 - 1", "Dr. AfzalCS18C"],
 ];
 
+const weekSchedule = { MON: 0, TUE: 0, WED: 0, THU: 0, FRI: 0, SAT: 0 };
+const generateButton = () => {};
+
 const Home = () => {
   const classes = useStyles();
 
@@ -48,11 +57,13 @@ const Home = () => {
   const [sections, setSections] = React.useState(ExSections);
   const [teachers, setTeachers] = React.useState(worthyTeachers);
   const [lectures, setLectures] = React.useState(ExLectures);
+  const [workingTime, setworkingTime] = React.useState(weekSchedule);
 
   console.log(subjects);
   console.log(sections);
   console.log(teachers);
   console.log(lectures);
+  console.log(workingTime);
   return (
     <div>
       <PrimaryAppBar />
@@ -86,10 +97,27 @@ const Home = () => {
           sections={sections}
           teachers={teachers}
         />
+        <WorkingtimeInput
+          workingTime={workingTime}
+          setworkingTime={setworkingTime}
+        />
       </div>
       <div className={classes.cardHolder}>
         <LectureTable lectures={lectures} setLectures={setLectures} />
+        <WorkingtimeTable
+          workingTime={workingTime}
+          setworkingTime={setworkingTime}
+        />
       </div>
+      <Button
+        variant="contained"
+        color="secondary"
+        size="large"
+        className={classes.genButton}
+        onClick={generateButton}
+      >
+        Generate Timetable
+      </Button>
     </div>
   );
 };

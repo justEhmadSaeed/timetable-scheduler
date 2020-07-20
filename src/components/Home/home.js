@@ -187,6 +187,7 @@ const Home = () => {
         size="large"
         className={classes.genButton}
         onClick={generateButton}
+        disabled={!lectures.length}
       >
         Generate Timetable
       </Button>

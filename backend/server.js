@@ -3,9 +3,7 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
-// app.get("/profile", (req, res) => {
-//   res.send("Your profile get");
-// });
+
 app.get("/credithour", (req, res) => {
   console.log(res.statusCode);
   console.log(req.body)

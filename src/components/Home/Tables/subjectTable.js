@@ -17,6 +17,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
+import docs from "../../../constants/docs";
 
 function createData(name, code, contantHrs) {
   return { name, code, contantHrs };
@@ -157,7 +158,7 @@ const EnhancedTableToolbar = (props) => {
       temp.splice(target, 1);
     });
 
-    setSubjects(temp);
+    setSubjects(temp, docs.subjects);
     setSelected([]);
   };
 
@@ -239,7 +240,8 @@ const useStyles = makeStyles((theme) => ({
 export default function SubjectTable({ subjects, setSubjects }) {
   const rows = subjects
     ? subjects.map((subject) => createData(subject[0], subject[1], subject[2]))
-    : [createData("", "", "")];
+    : createData("", "", "");
+  // : [createData("", "", "")];
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -337,7 +339,7 @@ export default function SubjectTable({ subjects, setSubjects }) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.code}
+                      key={row.code ? row.code : "rowCode"}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">

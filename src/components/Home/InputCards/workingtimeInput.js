@@ -7,6 +7,7 @@ import {
   Button,
   MenuItem,
 } from "@material-ui/core";
+import docs from "../../../constants/docs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,7 +71,7 @@ export default function WorkingtimeInput({ workingTime, setworkingTime }) {
       let temp = { ...workingTime };
       temp[day] = period;
       // temp = temp.filter((value) => value !== day);
-      setworkingTime(temp);
+      setworkingTime(temp, docs.workingTime);
 
       setEmptyTextfields();
     } else setRequiredError();

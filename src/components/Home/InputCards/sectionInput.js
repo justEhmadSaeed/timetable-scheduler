@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Card, CardContent, Button } from "@material-ui/core";
+import docs from "../../../constants/docs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,7 +62,7 @@ export default function SectionInput({ sections, setSections }) {
         }
       } else temp = [[title, code]];
 
-      setSections(temp);
+      setSections(temp, docs.sections);
       setEmptyTextfields();
     } else {
       setRequiredError();

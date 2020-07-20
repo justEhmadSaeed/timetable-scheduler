@@ -17,6 +17,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
+import docs from "../../../constants/docs";
 
 function createData(teacher, section, subject, arrangement, lectureID) {
   return { teacher, section, subject, arrangement, lectureID };
@@ -62,12 +63,12 @@ const headCells = [
     disablePadding: false,
     label: "Subject",
   },
-//   {
-//     id: "arrangement",
-//     numeric: true,
-//     disablePadding: false,
-//     label: "Arrangement",
-//   },
+  //   {
+  //     id: "arrangement",
+  //     numeric: true,
+  //     disablePadding: false,
+  //     label: "Arrangement",
+  //   },
 ];
 
 function EnhancedTableHead(props) {
@@ -163,7 +164,7 @@ const EnhancedTableToolbar = (props) => {
       temp.splice(target, 1);
     });
 
-    setLectures(temp);
+    setLectures(temp, docs.lectures);
     setSelected([]);
   };
 
@@ -344,7 +345,7 @@ export default function LectureTable({ lectures, setLectures }) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.lectureID}
+                      key={row.lectureID ? row.lectureID : "rowlectureID"}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">

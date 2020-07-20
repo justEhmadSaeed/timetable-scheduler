@@ -7,6 +7,7 @@ import {
   Button,
   MenuItem,
 } from "@material-ui/core";
+import docs from "../../../constants/docs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,7 +89,7 @@ export default function SubjectInput({ subjects, setSubjects }) {
             return;
           }
         } else temp = [[title, code, contactHrs, creditHrs]];
-        setSubjects(temp);
+        setSubjects(temp, docs.subjects);
         setEmptyTextfields();
       } else {
         setcreditHrsError("Credits hrs must !> contact hrs");

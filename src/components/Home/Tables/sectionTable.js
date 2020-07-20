@@ -17,6 +17,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
+import docs from "../../../constants/docs";
 
 function createData(name, code) {
   return { name, code };
@@ -150,7 +151,7 @@ const EnhancedTableToolbar = (props) => {
       let target = temp.findIndex((e) => e[1] === element);
       temp.splice(target, 1);
     });
-    setSections(temp);
+    setSections(temp, docs.sections);
     setSelected([]);
   };
 
@@ -329,7 +330,7 @@ export default function SectionTable({ sections, setSections }) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.code}
+                      key={row.code ? row.code : "rowCode"}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">

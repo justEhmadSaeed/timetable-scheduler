@@ -7,6 +7,7 @@ import {
   Button,
   MenuItem,
 } from "@material-ui/core";
+import docs from "../../../constants/docs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -108,7 +109,7 @@ export default function LectureInput({
       } else
         temp = [[teacher, section, subject, lectureArr, teacher + section]];
 
-      setLectures(temp);
+      setLectures(temp, docs.lectures);
       setEmptyTextfields();
     } else setRequiredError();
   };
@@ -136,7 +137,10 @@ export default function LectureInput({
             variant="outlined"
           >
             {teachers.map((option) => (
-              <MenuItem key={option[1]} value={option[0]}>
+              <MenuItem
+                key={option[1] ? option[1] : "teacher"}
+                value={option[0]}
+              >
                 {option[0]}
               </MenuItem>
             ))}
@@ -161,7 +165,10 @@ export default function LectureInput({
             variant="outlined"
           >
             {sections.map((option) => (
-              <MenuItem key={option[1]} value={option[1]}>
+              <MenuItem
+                key={option[1] ? option[1] : "section"}
+                value={option[1]}
+              >
                 {option[1]}
               </MenuItem>
             ))}
@@ -186,7 +193,10 @@ export default function LectureInput({
             variant="outlined"
           >
             {subjects.map((option) => (
-              <MenuItem key={option[1]} value={option[1]}>
+              <MenuItem
+                key={option[1] ? option[1] : "subject"}
+                value={option[1]}
+              >
                 {option[1]}
               </MenuItem>
             ))}
@@ -215,7 +225,7 @@ export default function LectureInput({
               lectureArrangement[
                 subjects[subjects.findIndex((e) => e[1] === subject)][2] - 1
               ].map((option) => (
-                <MenuItem key={option} value={option}>
+                <MenuItem key={option ? option : "lecture"} value={option}>
                   {option}
                 </MenuItem>
               ))

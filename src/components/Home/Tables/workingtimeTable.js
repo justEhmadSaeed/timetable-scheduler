@@ -17,6 +17,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
+import docs from "../../../constants/docs";
 
 function createData(day, lectureCount) {
   return { day, lectureCount };
@@ -160,7 +161,7 @@ const EnhancedTableToolbar = (props) => {
     selected.forEach((element) => {
       temp[element] = 0;
     });
-    setworkingTime(temp);
+    setworkingTime(temp, docs.workingTime);
     setSelected([]);
   };
 
@@ -186,7 +187,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Section Table
+          Working Schedule
         </Typography>
       )}
 
@@ -242,7 +243,7 @@ export default function WorkingtimeTable({ workingTime, setworkingTime }) {
   const rows = Object.entries(workingTime)
     .filter((e) => e[1] !== 0)
     .map((time) => createData(time[0], time[1]));
-  
+
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("lectureCount");
@@ -339,7 +340,7 @@ export default function WorkingtimeTable({ workingTime, setworkingTime }) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.day}
+                      key={row.day ? row.day : "rowDay"}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">

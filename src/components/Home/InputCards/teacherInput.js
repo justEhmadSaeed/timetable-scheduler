@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Card, CardContent, Button } from "@material-ui/core";
+import docs from "../../../constants/docs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,7 +58,7 @@ export default function TeacherInput({ teachers, setTeachers }) {
         }
       } else temp = [[name, code]];
 
-      setTeachers(temp);
+      setTeachers(temp, docs.teachers);
       setEmptyTextfields();
     } else {
       setRequiredError();

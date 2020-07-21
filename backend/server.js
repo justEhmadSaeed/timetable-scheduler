@@ -1,29 +1,34 @@
 const express = require("express");
+const admin = require("firebase-admin");
+const serviceAccount = require("./constants/serviceAccountKey.json");
+const docs = require("./constants/docs");
+const cors = require("cors");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+const db = admin.firestore();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
+app.post("/gen", async (req, res) => {
+  console.log(req.body);
+  const userID = req.body["userID"];
+  let subjects;
+  await db
+    .collection(userID)
+    .doc(docs.subjects)
+    .get()
+    .then((res) => (subjects = res.data()));
 
-app.get("/credithour", (req, res) => {
-  console.log(res.statusCode);
-  console.log(req.body)
-  res.send(req.body);
-});
+  subjects = Object.values(subjects);
+  let temp = [].concat(...subjects);
+  console.log(temp);
 
-
-app.post("/", (req, res) => {
-  const user = {
-    name: "Mehru",
-    fieldOfstudy: "BSCS",
-    Section: "B",
-    Subjects: "AnalysisofAlgorithm",
-  };
-  res.send(user);
-});
-
-app.get("/final_tt", (req, res) => {
-  const arr = Scheduling();
-  res.send(arr);
+  res.send(temp);
 });
 
 app.listen(3001);
@@ -141,7 +146,7 @@ for (let i = 0; i < c.length; i++) {
       valid !== -1 ? t[j].assigned[valid].subject.creditHr : 0;
   }
 }
-console.table(remainingLectures);
+// console.table(remainingLectures);
 
 const Scheduling = () => {
   for (let per = 0; per < period.p; per++) {

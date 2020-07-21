@@ -30,7 +30,16 @@ const useStyles = makeStyles((theme) => ({
 
 const weekSchedule = { MON: 0, TUE: 0, WED: 0, THU: 0, FRI: 0, SAT: 0 };
 
-const generateButton = () => {};
+const generateButton = () => {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userID: firebase.auth().currentUser.uid }),
+  };
+  fetch("http://localhost:3001/gen", requestOptions)
+    .then((response) => response.json())
+    .then((data) => console.log(data));
+};
 
 const Home = () => {
   const db = firebase.firestore();
@@ -69,43 +78,45 @@ const Home = () => {
       .then((e) => console.log("saved"))
       .catch((e) => console.error("error", e));
   };
-  const fetchRecords = async () => {
-    userRef
-      .get()
-      .then((snapShot) => {
-        snapShot.forEach((doc) => {
-          // console.log(doc.data(), doc.id);
-          const records =
-            doc.id === docs.workingTime
-              ? doc.data()
-              : Object.values(doc.data());
-          // console.log(records);
-
-          switch (doc.id) {
-            case docs.subjects:
-              setSubjects(records);
-              break;
-            case docs.sections:
-              setSections(records);
-              break;
-            case docs.teachers:
-              setTeachers(records);
-              break;
-            case docs.lectures:
-              setLectures(records);
-              break;
-            case docs.workingTime:
-              setworkingTime(records);
-              break;
-            default:
-              console.error("Wrong Document");
-          }
-        });
-      })
-      .catch((e) => console.log("err", e));
-  };
 
   React.useEffect(() => {
+    const db = firebase.firestore();
+    const userRef = db.collection(firebase.auth().currentUser.uid);
+    const fetchRecords = async () => {
+      userRef
+        .get()
+        .then((snapShot) => {
+          snapShot.forEach((doc) => {
+            // console.log(doc.data(), doc.id);
+            const records =
+              doc.id === docs.workingTime
+                ? doc.data()
+                : Object.values(doc.data());
+            // console.log(records);
+
+            switch (doc.id) {
+              case docs.subjects:
+                setSubjects(records);
+                break;
+              case docs.sections:
+                setSections(records);
+                break;
+              case docs.teachers:
+                setTeachers(records);
+                break;
+              case docs.lectures:
+                setLectures(records);
+                break;
+              case docs.workingTime:
+                setworkingTime(records);
+                break;
+              default:
+                console.error("Wrong Document");
+            }
+          });
+        })
+        .catch((e) => console.log("err", e));
+    };
     fetchRecords();
   }, []);
 

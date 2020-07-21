@@ -96,6 +96,9 @@ export default function SectionInput({ sections, setSections }) {
             helperText={codeError}
             value={code}
             onChange={codeChange}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) addButton();
+            }}
           />
         </div>
         <div>

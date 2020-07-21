@@ -114,6 +114,11 @@ export default function LectureInput({
     } else setRequiredError();
   };
 
+  const selectedIndex = (array, element, index) =>
+    array[array.findIndex((e) => e[index] === element)];
+
+  const subjectIndex = selectedIndex(subjects, subject, 0);
+
   return (
     <Card className={classes.root}>
       <CardContent className={classes.content}>
@@ -195,9 +200,9 @@ export default function LectureInput({
             {subjects.map((option) => (
               <MenuItem
                 key={option[1] ? option[1] : "subject"}
-                value={option[1]}
+                value={option[0]}
               >
-                {option[1]}
+                {option[0]}
               </MenuItem>
             ))}
           </TextField>
@@ -216,15 +221,16 @@ export default function LectureInput({
             onChange={lecturesChange}
             value={lectureArr}
             disabled={!subject}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) addButton();
+            }}
             InputLabelProps={{
               shrink: true,
             }}
             variant="outlined"
           >
-            {subject ? (
-              lectureArrangement[
-                subjects[subjects.findIndex((e) => e[1] === subject)][2] - 1
-              ].map((option) => (
+            {subject && subjectIndex ? (
+              lectureArrangement[subjectIndex[2] - 1].map((option) => (
                 <MenuItem key={option ? option : "lecture"} value={option}>
                   {option}
                 </MenuItem>

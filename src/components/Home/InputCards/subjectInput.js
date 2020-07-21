@@ -162,6 +162,9 @@ export default function SubjectInput({ subjects, setSubjects }) {
             helperText={contantHrsError}
             onChange={contacthrsChange}
             value={contactHrs}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) addButton();
+            }}
             InputLabelProps={{
               shrink: true,
             }}

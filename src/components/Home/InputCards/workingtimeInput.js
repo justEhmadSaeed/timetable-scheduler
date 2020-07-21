@@ -121,6 +121,9 @@ export default function WorkingtimeInput({ workingTime, setworkingTime }) {
             helperText={periodError}
             onChange={periodChange}
             value={period}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) addButton();
+            }}
             InputLabelProps={{
               shrink: true,
             }}

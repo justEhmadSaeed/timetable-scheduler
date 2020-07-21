@@ -93,6 +93,9 @@ export default function TeacherInput({ teachers, setTeachers }) {
             helperText={codeError}
             value={code}
             onChange={codeChange}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) addButton();
+            }}
           />
         </div>
         <div>

@@ -1,20 +1,20 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Card, CardContent, Button } from "@material-ui/core";
+import { TextField, Card, Button } from "@material-ui/core";
 import docs from "../../../constants/docs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 275,
+    // minWidth: 275,
     borderRadius: 20,
     margin: 10,
+    minHeight: 360,
+    display: "grid",
   },
   textField: {
     margin: 5,
   },
-  button: {
-    marginTop: "7%",
-  },
+  button: {},
 }));
 
 export default function TeacherInput({ teachers, setTeachers }) {
@@ -67,49 +67,47 @@ export default function TeacherInput({ teachers, setTeachers }) {
 
   return (
     <Card className={classes.root}>
-      <CardContent>
-        <h3>Add Teacher</h3>
-        <div>
-          <TextField
-            className={classes.textField}
-            required
-            id="teacher-name"
-            label="Teacher Name"
-            variant="outlined"
-            value={name}
-            onChange={nameChange}
-            error={!!nameError}
-            helperText={nameError}
-          />
-        </div>
-        <div>
-          <TextField
-            required
-            className={classes.textField}
-            id="teacher-code"
-            label="Teacher Code"
-            variant="outlined"
-            error={!!codeError}
-            helperText={codeError}
-            value={code}
-            onChange={codeChange}
-            onKeyDown={(e) => {
-              if (e.keyCode === 13) addButton();
-            }}
-          />
-        </div>
-        <div>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            size="medium"
-            onClick={addButton}
-          >
-            + Add Teacher
-          </Button>
-        </div>
-      </CardContent>
+      <h3>Add Teacher</h3>
+      <div>
+        <TextField
+          className={classes.textField}
+          required
+          id="teacher-name"
+          label="Teacher Name"
+          variant="outlined"
+          value={name}
+          onChange={nameChange}
+          error={!!nameError}
+          helperText={nameError}
+        />
+      </div>
+      <div>
+        <TextField
+          required
+          className={classes.textField}
+          id="teacher-code"
+          label="Teacher Code"
+          variant="outlined"
+          error={!!codeError}
+          helperText={codeError}
+          value={code}
+          onChange={codeChange}
+          onKeyDown={(e) => {
+            if (e.keyCode === 13) addButton();
+          }}
+        />
+      </div>
+      <div>
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          size="medium"
+          onClick={addButton}
+        >
+          + Add Teacher
+        </Button>
+      </div>
     </Card>
   );
 }

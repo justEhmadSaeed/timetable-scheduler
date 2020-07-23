@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PrimaryAppBar from "./Appbar";
 import SubjectInput from "./InputCards/subjectInput";
@@ -11,7 +11,7 @@ import LectureInput from "./lectures/lectureInput";
 import LectureTable from "./lectures/lectureTable";
 import WorkingtimeInput from "./InputCards/workingtimeInput";
 import WorkingtimeTable from "./Tables/workingtimeTable";
-import { Button } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
 import "./home.css";
 import docs from "../../constants/docs";
 import firebase from "firebase";
@@ -23,34 +23,37 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-evenly",
     marginTop: 10,
   },
+  lectures: {
+    width: "100%",
+    margin: "0% 5%",
+  },
   genButton: {
     marginBottom: 25,
+  },
+  wrapper: {
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+  },
+  buttonProgress: {
+    position: "absolute",
+    top: "3%",
   },
 }));
 
 const weekSchedule = { MON: 0, TUE: 0, WED: 0, THU: 0, FRI: 0, SAT: 0 };
-
-const generateButton = () => {
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ userID: firebase.auth().currentUser.uid }),
-  };
-  fetch("http://localhost:3001/gen", requestOptions)
-    .then((response) => response.json())
-    .then((data) => console.log(data));
-};
 
 const Home = () => {
   const db = firebase.firestore();
   const userRef = db.collection(firebase.auth().currentUser.uid);
   const classes = useStyles();
 
-  const [subjects, setSubjects] = React.useState([]);
-  const [sections, setSections] = React.useState([]);
-  const [teachers, setTeachers] = React.useState([]);
-  const [lectures, setLectures] = React.useState([]);
-  const [workingTime, setworkingTime] = React.useState(weekSchedule);
+  const [subjects, setSubjects] = useState([]);
+  const [sections, setSections] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [lectures, setLectures] = useState([]);
+  const [workingTime, setworkingTime] = useState(weekSchedule);
+  const [loading, setloading] = useState(false);
 
   const updateSubjects = (sub, docType) => {
     switch (docType) {
@@ -119,7 +122,18 @@ const Home = () => {
     };
     fetchRecords();
   }, []);
-
+  const generateButton = () => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userID: firebase.auth().currentUser.uid }),
+    };
+    setloading(true);
+    fetch("http://localhost:3001/gen", requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+    setloading(false);
+  };
   console.log(subjects);
   console.log(sections);
   console.log(teachers);
@@ -129,79 +143,93 @@ const Home = () => {
     <div>
       <PrimaryAppBar />
       <div className={classes.cardHolder}>
-        <SubjectInput
-          className={classes.card}
-          subjects={subjects}
-          setSubjects={updateSubjects}
-          docs={docs}
-        />
-        <SectionInput
-          className={classes.card}
-          sections={sections}
-          setSections={updateSubjects}
-          docs={docs}
-        />
-        <TeacherInput
-          className={classes.card}
-          teachers={teachers}
-          setTeachers={updateSubjects}
-          docs={docs}
-        />
+        <div>
+          <SubjectInput
+            className={classes.card}
+            subjects={subjects}
+            setSubjects={updateSubjects}
+            docs={docs}
+          />
+          <SubjectTable
+            subjects={subjects}
+            setSubjects={updateSubjects}
+            docType={docs}
+          />
+        </div>
+        <div>
+          <SectionInput
+            className={classes.card}
+            sections={sections}
+            setSections={updateSubjects}
+            docs={docs}
+          />
+          <SectionTable
+            sections={sections}
+            setSections={updateSubjects}
+            docs={docs}
+          />
+        </div>
+        <div>
+          <TeacherInput
+            className={classes.card}
+            teachers={teachers}
+            setTeachers={updateSubjects}
+            docs={docs}
+          />
+          <TeacherTable
+            teachers={teachers}
+            setTeachers={updateSubjects}
+            docs={docs}
+          />
+        </div>
+
+        <div className={classes.lectures}>
+          <LectureInput
+            lectures={lectures}
+            setLectures={updateSubjects}
+            docs={docs}
+            subjects={subjects}
+            sections={sections}
+            teachers={teachers}
+          />
+          <LectureTable
+            lectures={lectures}
+            setLectures={updateSubjects}
+            docs={docs}
+          />
+        </div>
+        <div>
+          <WorkingtimeInput
+            workingTime={workingTime}
+            setworkingTime={updateSubjects}
+            docs={docs}
+          />
+          <WorkingtimeTable
+            workingTime={workingTime}
+            setworkingTime={updateSubjects}
+            docs={docs}
+          />
+        </div>
       </div>
-      <div className={classes.cardHolder}>
-        <SubjectTable
-          subjects={subjects}
-          setSubjects={updateSubjects}
-          docType={docs}
-        />
-        <SectionTable
-          sections={sections}
-          setSections={updateSubjects}
-          docs={docs}
-        />
-        <TeacherTable
-          teachers={teachers}
-          setTeachers={updateSubjects}
-          docs={docs}
-        />
+      <div className={classes.wrapper}>
+        <Button
+          variant="contained"
+          color="secondary"
+          size="large"
+          className={classes.genButton}
+          onClick={generateButton}
+          disabled={!lectures.length || loading}
+        >
+          Generate Timetable
+        </Button>
+        {loading && (
+          <CircularProgress
+            color="secondary"
+            size={38}
+            className={classes.buttonProgress}
+          />
+        )}
       </div>
-      <div className={classes.cardHolder}>
-        <LectureInput
-          lectures={lectures}
-          setLectures={updateSubjects}
-          docs={docs}
-          subjects={subjects}
-          sections={sections}
-          teachers={teachers}
-        />
-        <WorkingtimeInput
-          workingTime={workingTime}
-          setworkingTime={updateSubjects}
-          docs={docs}
-        />
-      </div>
-      <div className={classes.cardHolder}>
-        <LectureTable
-          lectures={lectures}
-          setLectures={updateSubjects}
-          docs={docs}
-        />
-        <WorkingtimeTable
-          workingTime={workingTime}
-          setworkingTime={updateSubjects}
-          docs={docs}
-        />
-      </div>
-      <Button
-        variant="contained"
-        color="secondary"
-        size="large"
-        className={classes.genButton}
-        onClick={generateButton}
-        disabled={!lectures.length}
-      >
-        Generate Timetable
-      </Button>
     </div>
   );
 };

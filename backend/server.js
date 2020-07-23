@@ -18,17 +18,16 @@ app.post("/gen", async (req, res) => {
   console.log(req.body);
   const userID = req.body["userID"];
   let subjects;
-  await db
-    .collection(userID)
-    .doc(docs.subjects)
-    .get()
-    .then((res) => (subjects = res.data()));
+  // await db
+  //   .collection(userID)
+  //   .doc(docs.subjects)
+  //   .get()
+  //   .then((res) => (subjects = res.data()));
 
-  subjects = Object.values(subjects);
-  let temp = [].concat(...subjects);
-  console.log(temp);
-
-  res.send(temp);
+  // subjects = Object.values(subjects);
+  // let temp = [].concat(...subjects);
+  console.log("timetable");
+  res.send(["timetable"]);
 });
 
 app.listen(3001);
@@ -129,7 +128,7 @@ const t = [
     ],
   },
 ];
-const teacherSubjectHrs = ["s1", "s2", "s3", "s4", "s5"];
+// const teacherSubjectHrs = ["s1", "s2", "s3", "s4", "s5"];
 
 const final_tt = ThreeDarray(c.length, period.d, period.p);
 

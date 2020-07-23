@@ -21,15 +21,12 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up("md")]: {
       display: "flex",
-      justifyContent: "center",
+      justifyContent: "space-around",
     },
   },
   textField: {
     margin: 5,
     minWidth: 200,
-    [theme.breakpoints.up("md")]: {
-      minWidth: 100,
-    },
   },
   button: {
     [theme.breakpoints.up("sm")]: {
@@ -98,11 +95,18 @@ export default function LectureInput({
       let temp = [...lectures];
 
       if (lectures) {
-        if (temp.findIndex((e) => e[4] === teacher + section) === -1)
+        if (
+          temp.findIndex(
+            (e) =>
+              e[4] === teacher + section ||
+              (e[1] === section && e[2] === subject)
+          ) === -1
+        )
           temp.push([teacher, section, subject, lectureArr, teacher + section]);
         else {
           setRequiredError();
           setteacherError("Lecture already exists");
+          setsubjectError("Lecture already exists");
           setsectionError("Lecture already exists");
           return;
         }
@@ -123,7 +127,6 @@ export default function LectureInput({
     <Card className={classes.root}>
       <CardContent className={classes.content}>
         <h3 style={{ textAlign: "left" }}>Add Lectures</h3>
-
         <div>
           <TextField
             type="number"

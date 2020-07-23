@@ -39,9 +39,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function WorkingtimeInput({ workingTime, setworkingTime }) {
-  const [day, setday] = useState("");
   const classes = useStyles();
+  
+  const [day, setday] = useState("");
   const [period, setperiod] = useState("");
+
+  
+  
   const [dayError, setdayError] = useState("");
   const [periodError, setperiodError] = useState("");
 

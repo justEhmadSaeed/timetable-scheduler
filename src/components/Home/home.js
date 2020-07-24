@@ -202,6 +202,7 @@ const Home = () => {
           <WorkingtimeInput
             workingTime={workingTime}
             setworkingTime={updateSubjects}
+            sections={sections}
             docs={docs}
           />
           <WorkingtimeTable

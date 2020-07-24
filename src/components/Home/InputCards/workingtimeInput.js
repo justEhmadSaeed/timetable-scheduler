@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 5,
     minWidth: 200,
     [theme.breakpoints.up("md")]: {
-      minWidth: 100,
+      minWidth: 150,
     },
   },
   button: {
@@ -38,14 +38,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function WorkingtimeInput({ workingTime, setworkingTime }) {
+export default function WorkingtimeInput({
+  workingTime,
+  setworkingTime,
+  sections,
+}) {
   const classes = useStyles();
-  
+
   const [day, setday] = useState("");
   const [period, setperiod] = useState("");
+  // const [room, setroom] = useState(sections.length);
 
-  
-  
   const [dayError, setdayError] = useState("");
   const [periodError, setperiodError] = useState("");
 
@@ -56,6 +59,9 @@ export default function WorkingtimeInput({ workingTime, setworkingTime }) {
   const periodChange = (event) => {
     setperiod(event.target.value);
   };
+  // const roomChange = (event) => {
+  //   setroom(event.target.value);
+  // };
 
   const setRequiredError = () => {
     !day ? setdayError("Required") : setdayError("");
@@ -117,7 +123,7 @@ export default function WorkingtimeInput({ workingTime, setworkingTime }) {
           <TextField
             type="number"
             className={classes.textField}
-            id="days"
+            id="periods"
             label="Periods(hr)"
             select
             required
@@ -138,6 +144,31 @@ export default function WorkingtimeInput({ workingTime, setworkingTime }) {
                 {option}
               </MenuItem>
             ))}
+          </TextField>
+        </div>
+        <div>
+          <TextField
+            type="number"
+            className={classes.textField}
+            id="days"
+            label="Rooms"
+            select
+            required
+            // onChange={roomChange}
+            value={sections.length}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) addButton();
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            variant="outlined"
+          >
+            {
+              <MenuItem key={"rooms"} value={sections.length}>
+                {sections.length}
+              </MenuItem>
+            }
           </TextField>
         </div>
         <Button

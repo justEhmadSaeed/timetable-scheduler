@@ -131,8 +131,14 @@ const Home = () => {
     setloading(true);
     fetch("http://localhost:3001/generate", requestOptions)
       .then((response) => response.json())
-      .then((data) => console.log(data));
-    setloading(false);
+      .then((data) => {
+        console.log(data);
+        setloading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setloading(false);
+      });
   };
   console.log(subjects);
   console.log(sections);

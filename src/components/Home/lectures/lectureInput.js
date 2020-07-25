@@ -93,7 +93,7 @@ export default function LectureInput({
   const addButton = () => {
     if (subject && teacher && section && lectureArr) {
       let temp = [...lectures];
-
+      
       if (lectures) {
         if (
           temp.findIndex(
@@ -121,7 +121,7 @@ export default function LectureInput({
   const selectedIndex = (array, element, index) =>
     array[array.findIndex((e) => e[index] === element)];
 
-  const subjectIndex = selectedIndex(subjects, subject, 0);
+  const subjectIndex = selectedIndex(subjects, subject, 1);
 
   return (
     <Card className={classes.root}>
@@ -203,9 +203,9 @@ export default function LectureInput({
             {subjects.map((option) => (
               <MenuItem
                 key={option[1] ? option[1] : "subject"}
-                value={option[0]}
+                value={option[1]}
               >
-                {option[0]}
+                {option[1]}
               </MenuItem>
             ))}
           </TextField>

@@ -102,7 +102,7 @@ function EnhancedTableHead(props) {
             align={
               !headCell.numeric
                 ? "left"
-                : headCell.id == "section"
+                : headCell.id === "section"
                 ? "center"
                 : "right"
             }

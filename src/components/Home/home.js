@@ -129,7 +129,7 @@ const Home = () => {
       body: JSON.stringify({ userID: firebase.auth().currentUser.uid }),
     };
     setloading(true);
-    fetch("http://localhost:3001/gen", requestOptions)
+    fetch("http://localhost:3001/generate", requestOptions)
       .then((response) => response.json())
       .then((data) => console.log(data));
     setloading(false);

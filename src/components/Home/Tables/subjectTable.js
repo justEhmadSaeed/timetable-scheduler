@@ -241,7 +241,6 @@ export default function SubjectTable({ subjects, setSubjects }) {
   const rows = subjects
     ? subjects.map((subject) => createData(subject[0], subject[1], subject[2]))
     : createData("", "", "");
-  // : [createData("", "", "")];
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");

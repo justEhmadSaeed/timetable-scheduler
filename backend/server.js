@@ -16,15 +16,18 @@ const db = admin.firestore();
 
 app.post("/generate", async (req, res) => {
   const userID = req.body["userID"];
-  const snapshot = await db.collection(userID).get();
+  const collection = db.collection(userID);
+  const snapshot = await collection.get();
 
   let l;
   let subjects;
+  let workingTime;
 
   if (!snapshot.empty)
     snapshot.forEach((snap) => {
       if (snap.id === docs.lectures) l = Object.values(snap.data());
       else if (snap.id === docs.subjects) subjects = Object.values(snap.data());
+      else if (snap.id === docs.workingTime) workingTime = snap.data();
     });
   // const s = [
   //   ["DMBS", "DBMS", 3, 3],
@@ -45,6 +48,7 @@ app.post("/generate", async (req, res) => {
   const sections = l
     .map((e) => e[1])
     .filter((value, index, self) => self.indexOf(value) === index);
+
   subjects = addSubjects(subjects);
 
   const teacherLec = t.map((teacher) => {
@@ -63,25 +67,33 @@ app.post("/generate", async (req, res) => {
         });
     });
   });
+  const days = Object.values(workingTime).filter((wt) => wt !== 0);
+
   const period = {
-    d: 4,
-    p: 7,
+    d: days.length,
+    p: days.reduce((a, b) => Math.max(a, b)),
   };
-  console.log("teacher", t);
-  console.log("sections", sections);
-  console.log("subjects", subjects);
-  console.log("l", l);
-  console.log("teacherLec", teacherLec);
-  console.log("first lecture", teacherLec[0].assigned[0].subject);
+  // console.log("teacher", t);
+  // console.log("sections", sections);
+  // console.log("subjects", subjects);
+  // console.log("l", l);
+  // console.log("teacherLec", teacherLec);
+  // console.log("first lecture", teacherLec[0].assigned[0].subject);
   const finalized = Scheduling(teacherLec, sections, period);
 
-  finalized.forEach((tt, i) => {
-    console.log("Class: ", i + 1);
-
+  finalized.forEach(async (tt, i) => {
+    await collection
+      .doc(docs.timeTable)
+      .collection(docs.timeTable)
+      .doc(sections[i])
+      .set({ ...Object(tt.map((e) => Object(e))) })
+      .then(() => console.log("done", i + 1))
+      .catch((e) => console.log(e));
+    console.log(sections[i]);
     console.table(tt);
   });
 
-  res.send(finalized);
+  res.send(sections);
 });
 
 app.listen(3001);

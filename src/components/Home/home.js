@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PrimaryAppBar from "./Appbar";
 import SubjectInput from "./InputCards/subjectInput";
@@ -11,6 +11,7 @@ import LectureInput from "./lectures/lectureInput";
 import LectureTable from "./lectures/lectureTable";
 import WorkingtimeInput from "./InputCards/workingtimeInput";
 import WorkingtimeTable from "./Tables/workingtimeTable";
+import Timetable from "./timetable";
 import { Button, CircularProgress } from "@material-ui/core";
 import "./home.css";
 import docs from "../../constants/docs";
@@ -54,8 +55,10 @@ const Home = () => {
   const [lectures, setLectures] = useState([]);
   const [workingTime, setworkingTime] = useState(weekSchedule);
   const [loading, setloading] = useState(false);
+  const [timetable, settimetable] = useState(undefined);
+  const [lecSections, setlecSections] = useState(undefined);
 
-  const updateSubjects = (sub, docType) => {
+  const updateDB = (sub, docType) => {
     switch (docType) {
       case "subjects":
         setSubjects(sub);
@@ -82,46 +85,67 @@ const Home = () => {
       .catch((e) => console.error("error", e));
   };
 
-  React.useEffect(() => {
+  const fetchTimetable = async (lecSect) => {
     const db = firebase.firestore();
     const userRef = db.collection(firebase.auth().currentUser.uid);
-    const fetchRecords = async () => {
-      userRef
-        .get()
-        .then((snapShot) => {
-          snapShot.forEach((doc) => {
-            // console.log(doc.data(), doc.id);
-            const records =
-              doc.id === docs.workingTime
-                ? doc.data()
-                : Object.values(doc.data());
-            // console.log(records);
 
-            switch (doc.id) {
-              case docs.subjects:
-                setSubjects(records);
-                break;
-              case docs.sections:
-                setSections(records);
-                break;
-              case docs.teachers:
-                setTeachers(records);
-                break;
-              case docs.lectures:
-                setLectures(records);
-                break;
-              case docs.workingTime:
-                setworkingTime(records);
-                break;
-              default:
-                console.error("Wrong Document");
-            }
+    const temp = {};
+
+    await userRef
+      .doc(docs.timeTable)
+      .collection(docs.timeTable)
+      .get()
+      .then((snapshot) => {
+        if (!snapshot.empty)
+          snapshot.forEach((snap) => {
+            temp[snap.id] = Object.values(snap.data());
           });
-        })
-        .catch((e) => console.log("err", e));
-    };
-    fetchRecords();
+        settimetable(temp);
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const fetchRecords = useCallback(async () => {
+    const db = firebase.firestore();
+    const userRef = db.collection(firebase.auth().currentUser.uid);
+    userRef
+      .get()
+      .then((snapShot) => {
+        snapShot.forEach((doc) => {
+          const records =
+            doc.id === docs.workingTime
+              ? doc.data()
+              : Object.values(doc.data());
+          switch (doc.id) {
+            case docs.subjects:
+              setSubjects(records);
+              break;
+            case docs.sections:
+              setSections(records);
+              break;
+            case docs.teachers:
+              setTeachers(records);
+              break;
+            case docs.lectures:
+              setLectures(records);
+              break;
+            case docs.workingTime:
+              setworkingTime(records);
+              break;
+
+            default:
+              console.error("Wrong Document");
+          }
+        });
+      })
+      .catch((e) => console.log("err", e));
   }, []);
+
+  React.useEffect(() => {
+    fetchRecords();
+    // fetchTimetable(lecSections);
+  }, [fetchRecords]);
+
   const generateButton = () => {
     const requestOptions = {
       method: "POST",
@@ -131,8 +155,9 @@ const Home = () => {
     setloading(true);
     fetch("http://localhost:3001/generate", requestOptions)
       .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+      .then(async (data) => {
+        setlecSections(data);
+        fetchTimetable(lecSections);
         setloading(false);
       })
       .catch((e) => {
@@ -140,11 +165,12 @@ const Home = () => {
         setloading(false);
       });
   };
-  console.log(subjects);
-  console.log(sections);
-  console.log(teachers);
-  console.log(lectures);
-  console.log(workingTime);
+  // console.log(subjects);
+  // console.log(sections);
+  // console.log(teachers);
+  // console.log(lectures);
+  // console.log(workingTime);
+  console.log(timetable);
   return (
     <div>
       <PrimaryAppBar />
@@ -153,12 +179,12 @@ const Home = () => {
           <SubjectInput
             className={classes.card}
             subjects={subjects}
-            setSubjects={updateSubjects}
+            setSubjects={updateDB}
             docs={docs}
           />
           <SubjectTable
             subjects={subjects}
-            setSubjects={updateSubjects}
+            setSubjects={updateDB}
             docType={docs}
           />
         </div>
@@ -166,12 +192,12 @@ const Home = () => {
           <SectionInput
             className={classes.card}
             sections={sections}
-            setSections={updateSubjects}
+            setSections={updateDB}
             docs={docs}
           />
           <SectionTable
             sections={sections}
-            setSections={updateSubjects}
+            setSections={updateDB}
             docs={docs}
           />
         </div>
@@ -179,12 +205,12 @@ const Home = () => {
           <TeacherInput
             className={classes.card}
             teachers={teachers}
-            setTeachers={updateSubjects}
+            setTeachers={updateDB}
             docs={docs}
           />
           <TeacherTable
             teachers={teachers}
-            setTeachers={updateSubjects}
+            setTeachers={updateDB}
             docs={docs}
           />
         </div>
@@ -192,7 +218,7 @@ const Home = () => {
         <div className={classes.lectures}>
           <LectureInput
             lectures={lectures}
-            setLectures={updateSubjects}
+            setLectures={updateDB}
             docs={docs}
             subjects={subjects}
             sections={sections}
@@ -200,20 +226,20 @@ const Home = () => {
           />
           <LectureTable
             lectures={lectures}
-            setLectures={updateSubjects}
+            setLectures={updateDB}
             docs={docs}
           />
         </div>
         <div>
           <WorkingtimeInput
             workingTime={workingTime}
-            setworkingTime={updateSubjects}
+            setworkingTime={updateDB}
             sections={sections}
             docs={docs}
           />
           <WorkingtimeTable
             workingTime={workingTime}
-            setworkingTime={updateSubjects}
+            setworkingTime={updateDB}
             docs={docs}
           />
         </div>
@@ -235,6 +261,15 @@ const Home = () => {
             size={38}
             className={classes.buttonProgress}
           />
+        )}
+      </div>
+      <div className={classes.cardHolder}>
+        {lecSections && timetable ? (
+          lecSections.map((sec, i) => (
+            <Timetable timeTable={timetable[sec]} section={sec} key={sec} />
+          ))
+        ) : (
+          <div></div>
         )}
       </div>
     </div>

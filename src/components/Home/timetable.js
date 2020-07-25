@@ -26,20 +26,6 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData([mon, tue, wed, thu, fri]) {
-  return { mon, tue, wed, thu, fri };
-}
-
-//     [
-//   createData("Lecture 1", 159, 6.0, 24, 4.0, 0),
-//   createData("Lecture 2", 237, 9.0, 37, 4.3, 0),
-//   createData("Lecture 3", 262, 16.0, 24, 6.0, 0),
-//   createData("Lecture 4", 305, 3.7, 67, 4.3, 0),
-//   createData("Lecture 5", 356, 16.0, 49, 3.9, 0),
-//   createData("Lecture 6", 356, 16.0, 49, 3.9, 0),
-//   createData("Lecture 7", 356, 16.0, 49, 3.9, 0),
-// ];
-
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(2),
@@ -62,11 +48,15 @@ export default function Timetable({ timeTable, section }) {
             <StyledTableCell key={"sec" + section}>
               Section {section}
             </StyledTableCell>
-            {timeTable[0].map((day, i) => (
-              <StyledTableCell key={"lectures" + section + i} align="right">
-                Lecture {i + 1}
-              </StyledTableCell>
-            ))}
+            {timeTable ? (
+              timeTable[0].map((day, i) => (
+                <StyledTableCell key={"lectures" + section + i} align="right">
+                  Lecture {i + 1}
+                </StyledTableCell>
+              ))
+            ) : (
+              <StyledTableCell key={"lectures" + section}></StyledTableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>

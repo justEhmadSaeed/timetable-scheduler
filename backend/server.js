@@ -167,7 +167,11 @@ const Scheduling = (teacherLec, sections, period) => {
                   lectureCount = 3;
               }
               for (let i = 0; i < lectureCount; ++i) {
-                final_tt[cIndex][day][per + i] = teacherLec[teacher].name;
+                final_tt[cIndex][day][per + i] =
+                  teacherLec[teacher].name +
+                  "(" +
+                  teacherLec[teacher].assigned[valid].subject.code +
+                  ")";
                 c_available[cIndex][day][per + i] = teacherLec[teacher].name;
                 t_available[teacher][day][per + i] = clas;
                 remainingLectures[cIndex][teacher]--;

@@ -85,7 +85,7 @@ const Home = () => {
       .catch((e) => console.error("error", e));
   };
 
-  const fetchTimetable = async (lecSect) => {
+  const fetchTimetable = useCallback(async () => {
     const db = firebase.firestore();
     const userRef = db.collection(firebase.auth().currentUser.uid);
 
@@ -96,14 +96,18 @@ const Home = () => {
       .collection(docs.timeTable)
       .get()
       .then((snapshot) => {
-        if (!snapshot.empty)
+        if (!snapshot.empty) {
+          const lecSec = [];
           snapshot.forEach((snap) => {
             temp[snap.id] = Object.values(snap.data());
+            lecSec.push(snap.id);
           });
-        settimetable(temp);
+          setlecSections(lecSec);
+          settimetable(temp);
+        }
       })
       .catch((e) => console.log(e));
-  };
+  }, []);
 
   const fetchRecords = useCallback(async () => {
     const db = firebase.firestore();
@@ -143,8 +147,8 @@ const Home = () => {
 
   React.useEffect(() => {
     fetchRecords();
-    // fetchTimetable(lecSections);
-  }, [fetchRecords]);
+    fetchTimetable();
+  }, [fetchRecords, fetchTimetable]);
 
   const generateButton = () => {
     const requestOptions = {
@@ -156,8 +160,7 @@ const Home = () => {
     fetch("http://localhost:3001/generate", requestOptions)
       .then((response) => response.json())
       .then(async (data) => {
-        setlecSections(data);
-        fetchTimetable(lecSections);
+        fetchTimetable();
         setloading(false);
       })
       .catch((e) => {
@@ -264,7 +267,7 @@ const Home = () => {
         )}
       </div>
       <div className={classes.cardHolder}>
-        {lecSections && timetable ? (
+        {timetable ? (
           lecSections.map((sec, i) => (
             <Timetable timeTable={timetable[sec]} section={sec} key={sec} />
           ))

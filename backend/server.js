@@ -29,17 +29,6 @@ app.post("/generate", async (req, res) => {
       else if (snap.id === docs.subjects) subjects = Object.values(snap.data());
       else if (snap.id === docs.workingTime) workingTime = snap.data();
     });
-  // const s = [
-  //   ["DMBS", "DBMS", 3, 3],
-  //   ["AOA", "AOA", 3, 3],
-  //   ["DMBS Lab", "DBMS(Lab)", 3, 1],
-  // ];
-
-  // = [
-  // ["Samyan", "CS18A", "AOA", "2-1"],
-  // ["Awais", "CS18A", "DBMS", "2-1"],
-  // ["Laeeq", "CS18A", "DBMS(L)", "2-1"],
-  // ];
 
   const t = l
     .map((e) => e[0])
@@ -186,13 +175,6 @@ const Scheduling = (teacherLec, sections, period) => {
 
   return final_tt;
 };
-
-// const final_tt = Scheduling();
-// final_tt.forEach((tt, i) => {
-//   console.log("Class: ", i + 1);
-
-//   console.table(tt);
-// });
 
 // let remaining = [];
 // remainingLectures.forEach((lecture, i) => {

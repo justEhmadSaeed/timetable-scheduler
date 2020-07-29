@@ -173,7 +173,7 @@ const Home = () => {
   // console.log(teachers);
   // console.log(lectures);
   // console.log(workingTime);
-  console.log(timetable);
+  // console.log(timetable);
   return (
     <div>
       <PrimaryAppBar />

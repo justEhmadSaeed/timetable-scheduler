@@ -94,8 +94,7 @@ const Home = () => {
     await userRef
       .doc(docs.timeTable)
       .collection(docs.timeTable)
-      .get()
-      .then((snapshot) => {
+      .onSnapshot((snapshot) => {
         if (!snapshot.empty) {
           const lecSec = [];
           snapshot.forEach((snap) => {
@@ -105,8 +104,7 @@ const Home = () => {
           setlecSections(lecSec);
           settimetable(temp);
         }
-      })
-      .catch((e) => console.log(e));
+      });
   }, []);
 
   const fetchRecords = useCallback(async () => {

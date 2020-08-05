@@ -8,6 +8,26 @@
 - Each subject can only be assigned to a class at most one time.
 - Credit hours cannot exceed contact hours.
 
+## Tools and Technologies
+
+- **Windows OS:** Windows OS is used for the development of this project due to its user-friendly interface.
+
+- **VSCode:** VSCode is used as an editor for this project due to its high compatibility with Javascript & React.
+
+- **React.js:** React library is used to build the frontend of the project due to its high scalability and a large number of tools & Packages to aid in the development.
+
+- **Node:** Node is used as the backend of the project to provide backend-APIs services.
+
+- **Express js:** Express.js, a framework for the node is used to design the APIs for the project.
+
+- **Node Package Manager:** npm is used to handle the dependencies of the project.
+
+- **Firebase Authentication:** Firebase Authentication provides secure, user-friendly & multiple sign-in methods with many essential features including forgetting password & change password.
+
+- **Cloud Firestore Database:** Cloud firestore is used as the database for this project due to its efficient performance and many secure built-in features to accelerate the development and provide a remote database for the deployed application.
+
+- **Material UI:** Material UI is used as the standard for the frontend of the project due to its premium look and simplicity.
+
 ## Installation Guidelines
 
 ### **Prerequisite**
@@ -61,5 +81,5 @@ For the next time, you have to follow steps 2 & 4 only.
 
 In case of any query regarding the project installation, feel free to drop a mail at:
 
-- 👨[Ehmad Saeed](mailto:justehmadsaeed@gmail.com)
-- 👩[Mehrunnisa](mailto:justehmadsaeed@gmail.com)
+- 🧑 [Ehmad Saeed](mailto:justehmadsaeed@gmail.com)
+- 👩 [Mehrunnisa](mailto:mehrunnisa533@gmail.com)

@@ -122,43 +122,36 @@ const Home = () => {
           className={classes.card}
           subjects={subjects}
           setSubjects={updateSubjects}
-          docs={docs}
         />
         <SectionInput
           className={classes.card}
           sections={sections}
           setSections={updateSubjects}
-          docs={docs}
         />
         <TeacherInput
           className={classes.card}
           teachers={teachers}
           setTeachers={updateSubjects}
-          docs={docs}
         />
       </div>
       <div className={classes.cardHolder}>
         <SubjectTable
           subjects={subjects}
           setSubjects={updateSubjects}
-          docType={docs}
         />
         <SectionTable
           sections={sections}
           setSections={updateSubjects}
-          docs={docs}
         />
         <TeacherTable
           teachers={teachers}
           setTeachers={updateSubjects}
-          docs={docs}
         />
       </div>
       <div className={classes.cardHolder}>
         <LectureInput
           lectures={lectures}
           setLectures={updateSubjects}
-          docs={docs}
           subjects={subjects}
           sections={sections}
           teachers={teachers}
@@ -166,19 +159,17 @@ const Home = () => {
         <WorkingtimeInput
           workingTime={workingTime}
           setworkingTime={updateSubjects}
-          docs={docs}
         />
       </div>
       <div className={classes.cardHolder}>
         <LectureTable
           lectures={lectures}
           setLectures={updateSubjects}
-          docs={docs}
         />
         <WorkingtimeTable
           workingTime={workingTime}
           setworkingTime={updateSubjects}
-          docs={docs}
+          
         />
       </div>
       <Button

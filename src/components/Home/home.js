@@ -93,7 +93,6 @@ const Home = () => {
     await userRef
       .doc(docs.timeTable)
       .collection(docs.timeTable)
-      .orderBy(firebase.firestore.FieldPath.documentId())
       .onSnapshot((snapshot) => {
         if (!snapshot.empty) {
           const lecSec = [];
@@ -265,7 +264,7 @@ const Home = () => {
       </div>
       <div className={classes.cardHolder}>
         {timetable ? (
-          Object.keys(timetable).map((sec, i) => (
+          Object.keys(timetable).sort().map((sec, i) => (
             <Timetable timeTable={timetable[sec]} section={sec} key={sec} />
           ))
         ) : (

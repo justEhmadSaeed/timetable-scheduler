@@ -11,8 +11,8 @@ import LectureInput from './lectures/lectureInput';
 import LectureTable from './lectures/lectureTable';
 import WorkingtimeInput from './InputCards/workingtimeInput';
 import WorkingtimeTable from './Tables/workingtimeTable';
-import Timetable from './timetable';
 import { Button, CircularProgress } from '@material-ui/core';
+import GenerateTimetable from './GenerateTimetable';
 import './home.css';
 import docs from '../../constants/docs';
 import firebase from 'firebase';
@@ -262,15 +262,7 @@ const Home = () => {
           />
         )}
       </div>
-      <div className={classes.cardHolder}>
-        {timetable ? (
-          Object.keys(timetable).sort().map((sec, i) => (
-            <Timetable timeTable={timetable[sec]} section={sec} key={sec} />
-          ))
-        ) : (
-          <div></div>
-        )}
-      </div>
+      <GenerateTimetable timetable={timetable}/>
     </div>
   );
 };

@@ -1,9 +1,9 @@
-const express = require("express");
-const admin = require("firebase-admin");
-const serviceAccount = require("./constants/serviceAccountKey.json");
-const docs = require("./constants/docs");
-const cors = require("cors");
-const { sections } = require("./constants/docs");
+const express = require('express');
+const admin = require('firebase-admin');
+const serviceAccount = require('./constants/serviceAccountKey.json');
+const docs = require('./constants/docs');
+const cors = require('cors');
+const { sections } = require('./constants/docs');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -14,8 +14,8 @@ app.use(cors());
 
 const db = admin.firestore();
 
-app.post("/generate", async (req, res) => {
-  const userID = req.body["userID"];
+app.post('/generate', async (req, res) => {
+  const userID = req.body['userID'];
   const collection = db.collection(userID);
   const snapshot = await collection.get();
 
@@ -70,18 +70,30 @@ app.post("/generate", async (req, res) => {
   // console.log("first lecture", teacherLec[0].assigned[0].subject);
   const finalized = Scheduling(teacherLec, sections, period);
 
+  // Delete the old timetable documents
+  const batch = db.batch();
+  const snapTimetable = await collection
+    .doc(docs.timeTable)
+    .collection(docs.timeTable)
+    .get();
+  if (snapTimetable.size !== 0) {
+    snapTimetable.docs.forEach((doc) => batch.delete(doc.ref));
+    await batch.commit();
+    console.log('Previous Timetable Docuements Deleted successfully.');
+  }
+
+  // Storing Timetable in Database
   finalized.forEach(async (tt, i) => {
     await collection
       .doc(docs.timeTable)
       .collection(docs.timeTable)
       .doc(sections[i])
       .set({ ...Object(tt.map((e) => Object(e))) })
-      .then(() => console.log("done", i + 1))
+      .then(() => console.log('done', i + 1))
       .catch((e) => console.log(e));
     console.log(sections[i]);
     console.table(tt);
   });
-
   res.send(sections);
 });
 
@@ -158,9 +170,9 @@ const Scheduling = (teacherLec, sections, period) => {
               for (let i = 0; i < lectureCount; ++i) {
                 final_tt[cIndex][day][per + i] =
                   teacherLec[teacher].name +
-                  "(" +
+                  '(' +
                   teacherLec[teacher].assigned[valid].subject.code +
-                  ")";
+                  ')';
                 c_available[cIndex][day][per + i] = teacherLec[teacher].name;
                 t_available[teacher][day][per + i] = clas;
                 remainingLectures[cIndex][teacher]--;

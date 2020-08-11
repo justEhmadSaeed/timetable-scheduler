@@ -1,44 +1,44 @@
-import React, { useState, useCallback } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import PrimaryAppBar from "./Appbar";
-import SubjectInput from "./InputCards/subjectInput";
-import SectionInput from "./InputCards/sectionInput";
-import TeacherInput from "./InputCards/teacherInput";
-import SubjectTable from "./Tables/subjectTable";
-import SectionTable from "./Tables/sectionTable";
-import TeacherTable from "./Tables/teacherTable";
-import LectureInput from "./lectures/lectureInput";
-import LectureTable from "./lectures/lectureTable";
-import WorkingtimeInput from "./InputCards/workingtimeInput";
-import WorkingtimeTable from "./Tables/workingtimeTable";
-import Timetable from "./timetable";
-import { Button, CircularProgress } from "@material-ui/core";
-import "./home.css";
-import docs from "../../constants/docs";
-import firebase from "firebase";
+import React, { useState, useCallback } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import PrimaryAppBar from './Appbar';
+import SubjectInput from './InputCards/subjectInput';
+import SectionInput from './InputCards/sectionInput';
+import TeacherInput from './InputCards/teacherInput';
+import SubjectTable from './Tables/subjectTable';
+import SectionTable from './Tables/sectionTable';
+import TeacherTable from './Tables/teacherTable';
+import LectureInput from './lectures/lectureInput';
+import LectureTable from './lectures/lectureTable';
+import WorkingtimeInput from './InputCards/workingtimeInput';
+import WorkingtimeTable from './Tables/workingtimeTable';
+import Timetable from './timetable';
+import { Button, CircularProgress } from '@material-ui/core';
+import './home.css';
+import docs from '../../constants/docs';
+import firebase from 'firebase';
 
 const useStyles = makeStyles((theme) => ({
   cardHolder: {
-    display: "flex",
-    flexFlow: "row wrap",
-    justifyContent: "space-evenly",
+    display: 'flex',
+    flexFlow: 'row wrap',
+    justifyContent: 'space-evenly',
     marginTop: 10,
   },
   lectures: {
-    width: "100%",
-    margin: "0% 5%",
+    width: '100%',
+    margin: '0% 5%',
   },
   genButton: {
     marginBottom: 25,
   },
   wrapper: {
-    position: "relative",
-    display: "flex",
-    justifyContent: "center",
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
   },
   buttonProgress: {
-    position: "absolute",
-    top: "3%",
+    position: 'absolute',
+    top: '3%',
   },
 }));
 
@@ -56,33 +56,32 @@ const Home = () => {
   const [workingTime, setworkingTime] = useState(weekSchedule);
   const [loading, setloading] = useState(false);
   const [timetable, settimetable] = useState(undefined);
-  const [lecSections, setlecSections] = useState(undefined);
 
   const updateDB = (sub, docType) => {
     switch (docType) {
-      case "subjects":
+      case 'subjects':
         setSubjects(sub);
         break;
-      case "sections":
+      case 'sections':
         setSections(sub);
         break;
-      case "teachers":
+      case 'teachers':
         setTeachers(sub);
         break;
-      case "lectures":
+      case 'lectures':
         setLectures(sub);
         break;
-      case "workingTime":
+      case 'workingTime':
         setworkingTime(sub);
         break;
       default:
-        console.error("Wrong Document");
+        console.error('Wrong Document');
     }
     userRef
       .doc(docType)
       .set(docType === docs.workingTime ? sub : { ...Object(sub) })
-      .then((e) => console.log("saved"))
-      .catch((e) => console.error("error", e));
+      .then((e) => console.log('saved'))
+      .catch((e) => console.error('error', e));
   };
 
   const fetchTimetable = useCallback(async () => {
@@ -94,6 +93,7 @@ const Home = () => {
     await userRef
       .doc(docs.timeTable)
       .collection(docs.timeTable)
+      .orderBy(firebase.firestore.FieldPath.documentId())
       .onSnapshot((snapshot) => {
         if (!snapshot.empty) {
           const lecSec = [];
@@ -101,7 +101,6 @@ const Home = () => {
             temp[snap.id] = Object.values(snap.data());
             lecSec.push(snap.id);
           });
-          setlecSections(lecSec);
           settimetable(temp);
         }
       });
@@ -136,11 +135,11 @@ const Home = () => {
               break;
 
             default:
-              console.error("Wrong Document");
+              console.error('Wrong Document');
           }
         });
       })
-      .catch((e) => console.log("err", e));
+      .catch((e) => console.log('err', e));
   }, []);
 
   React.useEffect(() => {
@@ -150,14 +149,14 @@ const Home = () => {
 
   const generateButton = () => {
     const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userID: firebase.auth().currentUser.uid }),
     };
     setloading(true);
-    fetch("http://localhost:3001/generate", requestOptions)
+    fetch('http://localhost:3001/generate', requestOptions)
       .then((response) => response.json())
-      .then(async (data) => {
+      .then(async () => {
         fetchTimetable();
         setloading(false);
       })
@@ -171,7 +170,7 @@ const Home = () => {
   // console.log(teachers);
   // console.log(lectures);
   // console.log(workingTime);
-  // console.log(timetable);
+  console.log(timetable);
   return (
     <div>
       <PrimaryAppBar />
@@ -247,9 +246,9 @@ const Home = () => {
       </div>
       <div className={classes.wrapper}>
         <Button
-          variant="contained"
-          color="secondary"
-          size="large"
+          variant='contained'
+          color='secondary'
+          size='large'
           className={classes.genButton}
           onClick={generateButton}
           disabled={!lectures.length || loading}
@@ -258,7 +257,7 @@ const Home = () => {
         </Button>
         {loading && (
           <CircularProgress
-            color="secondary"
+            color='secondary'
             size={38}
             className={classes.buttonProgress}
           />
@@ -266,7 +265,7 @@ const Home = () => {
       </div>
       <div className={classes.cardHolder}>
         {timetable ? (
-          lecSections.map((sec, i) => (
+          Object.keys(timetable).map((sec, i) => (
             <Timetable timeTable={timetable[sec]} section={sec} key={sec} />
           ))
         ) : (

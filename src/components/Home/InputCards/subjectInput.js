@@ -90,7 +90,7 @@ export default function SubjectInput({ subjects, setSubjects }) {
         setSubjects(temp, docs.subjects);
         setEmptyTextfields();
       } else {
-        setcreditHrsError("Credits hrs must !> contact hrs");
+        setcontantHrsError("CreditHrs can't exceed contactHrs");
       }
     } else {
       setRequiredError();

@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   TextField,
   Card,
-  CardContent,
   Button,
   MenuItem,
 } from "@material-ui/core";
@@ -11,9 +10,10 @@ import docs from "../../../constants/docs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 275,
+    // minWidth: 275,
     margin: 10,
     borderRadius: 20,
+    minHeight: 360,
   },
   title: {
     fontSize: 14,
@@ -29,9 +29,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "baseline",
   },
-  button: {
-    marginLeft: "5%",
-  },
+  button: {},
 }));
 
 export default function SubjectInput({ subjects, setSubjects }) {
@@ -100,90 +98,91 @@ export default function SubjectInput({ subjects, setSubjects }) {
   };
   return (
     <Card className={classes.root}>
-      <CardContent>
-        <h3>Add Subject</h3>
-        <div>
-          <TextField
-            className={classes.textField}
-            onChange={titleChange}
-            value={title}
-            required
-            id="course-title"
-            label="Title"
-            variant="outlined"
-            error={!!titleError}
-            helperText={titleError}
-          />
-        </div>
-        <div>
-          <TextField
-            required
-            className={classes.textField}
-            value={code}
-            onChange={codeChange}
-            id="course-code"
-            label="Course Code"
-            variant="outlined"
-            error={!!codeError}
-            helperText={codeError}
-          />
-        </div>
-        <div className={classes.hours}>
-          <TextField
-            type="number"
-            className={classes.hrs}
-            id="credit-hours"
-            label="Credit Hours"
-            select
-            required
-            error={!!creditHrsError}
-            helperText={creditHrsError}
-            onChange={creditrsChange}
-            value={creditHrs}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-          >
-            {[1, 2, 3].map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            type="number"
-            className={classes.hrs}
-            id="contact-hours"
-            label="Contact Hours"
-            select
-            required
-            error={!!contantHrsError}
-            helperText={contantHrsError}
-            onChange={contacthrsChange}
-            value={contactHrs}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-          >
-            {[1, 2, 3].map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
-        </div>
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          size="medium"
-          onClick={addButton}
+      <h3>Add Subject</h3>
+      <div>
+        <TextField
+          className={!titleError ? classes.textField : ""}
+          onChange={titleChange}
+          value={title}
+          required
+          id="course-title"
+          label="Title"
+          variant="outlined"
+          error={!!titleError}
+          helperText={titleError}
+        />
+      </div>
+      <div>
+        <TextField
+          required
+          className={!codeError ? classes.textField : ""}
+          value={code}
+          onChange={codeChange}
+          id="course-code"
+          label="Course Code"
+          variant="outlined"
+          error={!!codeError}
+          helperText={codeError}
+        />
+      </div>
+      <div className={classes.hours}>
+        <TextField
+          type="number"
+          className={!creditHrsError ? classes.hrs : ""}
+          id="credit-hours"
+          label="Credit Hours"
+          select
+          required
+          error={!!creditHrsError}
+          helperText={creditHrsError}
+          onChange={creditrsChange}
+          value={creditHrs}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="outlined"
         >
-          + Add Subject
-        </Button>
-      </CardContent>
+          {[1, 2, 3].map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          type="number"
+          className={!contantHrsError ? classes.hrs : ""}
+          id="contact-hours"
+          label="Contact Hours"
+          select
+          required
+          error={!!contantHrsError}
+          helperText={contantHrsError}
+          onChange={contacthrsChange}
+          value={contactHrs}
+          onKeyDown={(e) => {
+            if (e.keyCode === 13) addButton();
+          }}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="outlined"
+        >
+          {[1, 2, 3].map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
+      </div>
+      <Button
+        className={classes.button}
+        variant="contained"
+        color="primary"
+        size="medium"
+        onClick={addButton}
+      >
+        + Add Subject
+      </Button>
     </Card>
   );
 }

@@ -1,13 +1,15 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Card, CardContent, Button } from "@material-ui/core";
+import { TextField, Card,  Button } from "@material-ui/core";
 import docs from "../../../constants/docs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 275,
+    // minWidth: 275,
     borderRadius: 20,
     margin: 10,
+    minHeight: 360,
+    display: 'grid',
   },
   title: {
     fontSize: 14,
@@ -17,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
   },
 
   button: {
-    marginTop: "7%",
   },
 }));
 
@@ -70,46 +71,47 @@ export default function SectionInput({ sections, setSections }) {
   };
   return (
     <Card className={classes.root}>
-      <CardContent>
-        <h3>Add Section</h3>
-        <div>
-          <TextField
-            className={classes.textField}
-            required
-            id="class-title"
-            label="Class Title"
-            variant="outlined"
-            value={title}
-            onChange={titleChange}
-            error={!!titleError}
-            helperText={titleError}
-          />
-        </div>
-        <div>
-          <TextField
-            required
-            className={classes.textField}
-            id="class-code"
-            label="Class Code"
-            variant="outlined"
-            error={!!codeError}
-            helperText={codeError}
-            value={code}
-            onChange={codeChange}
-          />
-        </div>
-        <div>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            size="medium"
-            onClick={addButton}
-          >
-            + Add Section
-          </Button>
-        </div>
-      </CardContent>
+      <h3>Add Section</h3>
+      <div>
+        <TextField
+          className={classes.textField}
+          required
+          id="class-title"
+          label="Class Title"
+          variant="outlined"
+          value={title}
+          onChange={titleChange}
+          error={!!titleError}
+          helperText={titleError}
+        />
+      </div>
+      <div>
+        <TextField
+          required
+          className={classes.textField}
+          id="class-code"
+          label="Class Code"
+          variant="outlined"
+          error={!!codeError}
+          helperText={codeError}
+          value={code}
+          onChange={codeChange}
+          onKeyDown={(e) => {
+            if (e.keyCode === 13) addButton();
+          }}
+        />
+      </div>
+      <div>
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          size="medium"
+          onClick={addButton}
+        >
+          + Add Section
+        </Button>
+      </div>
     </Card>
   );
 }

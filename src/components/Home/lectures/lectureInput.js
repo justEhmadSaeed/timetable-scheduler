@@ -21,15 +21,12 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up("md")]: {
       display: "flex",
-      justifyContent: "center",
+      justifyContent: "space-around",
     },
   },
   textField: {
     margin: 5,
     minWidth: 200,
-    [theme.breakpoints.up("md")]: {
-      minWidth: 100,
-    },
   },
   button: {
     [theme.breakpoints.up("sm")]: {
@@ -96,13 +93,20 @@ export default function LectureInput({
   const addButton = () => {
     if (subject && teacher && section && lectureArr) {
       let temp = [...lectures];
-
+      
       if (lectures) {
-        if (temp.findIndex((e) => e[4] === teacher + section) === -1)
+        if (
+          temp.findIndex(
+            (e) =>
+              e[4] === teacher + section ||
+              (e[1] === section && e[2] === subject)
+          ) === -1
+        )
           temp.push([teacher, section, subject, lectureArr, teacher + section]);
         else {
           setRequiredError();
           setteacherError("Lecture already exists");
+          setsubjectError("Lecture already exists");
           setsectionError("Lecture already exists");
           return;
         }
@@ -114,11 +118,15 @@ export default function LectureInput({
     } else setRequiredError();
   };
 
+  const selectedIndex = (array, element, index) =>
+    array[array.findIndex((e) => e[index] === element)];
+
+  const subjectIndex = selectedIndex(subjects, subject, 1);
+
   return (
     <Card className={classes.root}>
       <CardContent className={classes.content}>
         <h3 style={{ textAlign: "left" }}>Add Lectures</h3>
-
         <div>
           <TextField
             type="number"
@@ -216,15 +224,16 @@ export default function LectureInput({
             onChange={lecturesChange}
             value={lectureArr}
             disabled={!subject}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) addButton();
+            }}
             InputLabelProps={{
               shrink: true,
             }}
             variant="outlined"
           >
-            {subject ? (
-              lectureArrangement[
-                subjects[subjects.findIndex((e) => e[1] === subject)][2] - 1
-              ].map((option) => (
+            {subject && subjectIndex ? (
+              lectureArrangement[subjectIndex[2] - 1].map((option) => (
                 <MenuItem key={option ? option : "lecture"} value={option}>
                   {option}
                 </MenuItem>

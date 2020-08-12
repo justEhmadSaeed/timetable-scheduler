@@ -99,7 +99,13 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align={
+              !headCell.numeric
+                ? "left"
+                : headCell.id === "section"
+                ? "center"
+                : "right"
+            }
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -360,7 +366,7 @@ export default function LectureTable({ lectures, setLectures }) {
                       <TableCell
                         component="th"
                         id={labelId}
-                        align="right"
+                        align="center"
                         scope="row"
                       >
                         {row.section}

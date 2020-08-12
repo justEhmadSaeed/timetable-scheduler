@@ -7,4 +7,4 @@ const docs = {
   timeTable: "timeTable",
 };
 
-export default docs;
+module.exports = docs;

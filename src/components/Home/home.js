@@ -1,86 +1,121 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import PrimaryAppBar from "./Appbar";
-import SubjectInput from "./InputCards/subjectInput";
-import SectionInput from "./InputCards/sectionInput";
-import TeacherInput from "./InputCards/teacherInput";
-import SubjectTable from "./Tables/subjectTable";
-import SectionTable from "./Tables/sectionTable";
-import TeacherTable from "./Tables/teacherTable";
-import LectureInput from "./lectures/lectureInput";
-import LectureTable from "./lectures/lectureTable";
-import WorkingtimeInput from "./InputCards/workingtimeInput";
-import WorkingtimeTable from "./Tables/workingtimeTable";
-import { Button } from "@material-ui/core";
-import "./home.css";
-import docs from "../../constants/docs";
-import firebase from "firebase";
+import React, { useState, useCallback } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import PrimaryAppBar from './Appbar';
+import SubjectInput from './InputCards/subjectInput';
+import SectionInput from './InputCards/sectionInput';
+import TeacherInput from './InputCards/teacherInput';
+import SubjectTable from './Tables/subjectTable';
+import SectionTable from './Tables/sectionTable';
+import TeacherTable from './Tables/teacherTable';
+import LectureInput from './lectures/lectureInput';
+import LectureTable from './lectures/lectureTable';
+import WorkingtimeInput from './InputCards/workingtimeInput';
+import WorkingtimeTable from './Tables/workingtimeTable';
+import { Button, CircularProgress } from '@material-ui/core';
+import GenerateTimetable from './GenerateTimetable';
+import './home.css';
+import docs from '../../constants/docs';
+import firebase from 'firebase';
 
 const useStyles = makeStyles((theme) => ({
   cardHolder: {
-    display: "flex",
-    flexFlow: "row wrap",
-    justifyContent: "space-evenly",
+    display: 'flex',
+    flexFlow: 'row wrap',
+    justifyContent: 'space-evenly',
     marginTop: 10,
+  },
+  lectures: {
+    width: '100%',
+    margin: '0% 5%',
   },
   genButton: {
     marginBottom: 25,
   },
+  wrapper: {
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '3%',
+  },
 }));
 
 const weekSchedule = { MON: 0, TUE: 0, WED: 0, THU: 0, FRI: 0, SAT: 0 };
-
-const generateButton = () => {};
 
 const Home = () => {
   const db = firebase.firestore();
   const userRef = db.collection(firebase.auth().currentUser.uid);
   const classes = useStyles();
 
-  const [subjects, setSubjects] = React.useState([]);
-  const [sections, setSections] = React.useState([]);
-  const [teachers, setTeachers] = React.useState([]);
-  const [lectures, setLectures] = React.useState([]);
-  const [workingTime, setworkingTime] = React.useState(weekSchedule);
+  const [subjects, setSubjects] = useState([]);
+  const [sections, setSections] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [lectures, setLectures] = useState([]);
+  const [workingTime, setworkingTime] = useState(weekSchedule);
+  const [loading, setloading] = useState(false);
+  const [timetable, settimetable] = useState(undefined);
 
-  const updateSubjects = (sub, docType) => {
+  const updateDB = (sub, docType) => {
     switch (docType) {
-      case "subjects":
+      case 'subjects':
         setSubjects(sub);
         break;
-      case "sections":
+      case 'sections':
         setSections(sub);
         break;
-      case "teachers":
+      case 'teachers':
         setTeachers(sub);
         break;
-      case "lectures":
+      case 'lectures':
         setLectures(sub);
         break;
-      case "workingTime":
+      case 'workingTime':
         setworkingTime(sub);
         break;
       default:
-        console.error("Wrong Document");
+        console.error('Wrong Document');
     }
     userRef
       .doc(docType)
       .set(docType === docs.workingTime ? sub : { ...Object(sub) })
-      .then((e) => console.log("saved"))
-      .catch((e) => console.error("error", e));
+      .then((e) => console.log('saved'))
+      .catch((e) => console.error('error', e));
   };
-  const fetchRecords = async () => {
+
+  const fetchTimetable = useCallback(async () => {
+    const db = firebase.firestore();
+    const userRef = db.collection(firebase.auth().currentUser.uid);
+
+    const temp = {};
+
+    await userRef
+      .doc(docs.timeTable)
+      .collection(docs.timeTable)
+      .onSnapshot((snapshot) => {
+        if (!snapshot.empty) {
+          const lecSec = [];
+          snapshot.forEach((snap) => {
+            temp[snap.id] = Object.values(snap.data());
+            lecSec.push(snap.id);
+          });
+          settimetable(temp);
+        }
+      });
+  }, []);
+
+  const fetchRecords = useCallback(async () => {
+    const db = firebase.firestore();
+    const userRef = db.collection(firebase.auth().currentUser.uid);
     userRef
       .get()
       .then((snapShot) => {
         snapShot.forEach((doc) => {
-          // console.log(doc.data(), doc.id);
           const records =
             doc.id === docs.workingTime
               ? doc.data()
               : Object.values(doc.data());
-          // console.log(records);
-
           switch (doc.id) {
             case docs.subjects:
               setSubjects(records);
@@ -97,91 +132,137 @@ const Home = () => {
             case docs.workingTime:
               setworkingTime(records);
               break;
+
             default:
-              console.error("Wrong Document");
+              console.error('Wrong Document');
           }
         });
       })
-      .catch((e) => console.log("err", e));
-  };
+      .catch((e) => console.log('err', e));
+  }, []);
 
   React.useEffect(() => {
     fetchRecords();
-  }, []);
+    fetchTimetable();
+  }, [fetchRecords, fetchTimetable]);
 
-  console.log(subjects);
-  console.log(sections);
-  console.log(teachers);
-  console.log(lectures);
-  console.log(workingTime);
+  const generateButton = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userID: firebase.auth().currentUser.uid }),
+    };
+    setloading(true);
+    fetch('http://localhost:3001/generate', requestOptions)
+      .then((response) => response.json())
+      .then(async () => {
+        fetchTimetable();
+        setloading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setloading(false);
+      });
+  };
+  // console.log(subjects);
+  // console.log(sections);
+  // console.log(teachers);
+  // console.log(lectures);
+  // console.log(workingTime);
+  console.log(timetable);
   return (
     <div>
       <PrimaryAppBar />
       <div className={classes.cardHolder}>
-        <SubjectInput
-          className={classes.card}
-          subjects={subjects}
-          setSubjects={updateSubjects}
-        />
-        <SectionInput
-          className={classes.card}
-          sections={sections}
-          setSections={updateSubjects}
-        />
-        <TeacherInput
-          className={classes.card}
-          teachers={teachers}
-          setTeachers={updateSubjects}
-        />
+        <div>
+          <SubjectInput
+            className={classes.card}
+            subjects={subjects}
+            setSubjects={updateDB}
+            docs={docs}
+          />
+          <SubjectTable
+            subjects={subjects}
+            setSubjects={updateDB}
+            docType={docs}
+          />
+        </div>
+        <div>
+          <SectionInput
+            className={classes.card}
+            sections={sections}
+            setSections={updateDB}
+            docs={docs}
+          />
+          <SectionTable
+            sections={sections}
+            setSections={updateDB}
+            docs={docs}
+          />
+        </div>
+        <div>
+          <TeacherInput
+            className={classes.card}
+            teachers={teachers}
+            setTeachers={updateDB}
+            docs={docs}
+          />
+          <TeacherTable
+            teachers={teachers}
+            setTeachers={updateDB}
+            docs={docs}
+          />
+        </div>
+
+        <div className={classes.lectures}>
+          <LectureInput
+            lectures={lectures}
+            setLectures={updateDB}
+            docs={docs}
+            subjects={subjects}
+            sections={sections}
+            teachers={teachers}
+          />
+          <LectureTable
+            lectures={lectures}
+            setLectures={updateDB}
+            docs={docs}
+          />
+        </div>
+        <div>
+          <WorkingtimeInput
+            workingTime={workingTime}
+            setworkingTime={updateDB}
+            sections={sections}
+            docs={docs}
+          />
+          <WorkingtimeTable
+            workingTime={workingTime}
+            setworkingTime={updateDB}
+            docs={docs}
+          />
+        </div>
       </div>
-      <div className={classes.cardHolder}>
-        <SubjectTable
-          subjects={subjects}
-          setSubjects={updateSubjects}
-        />
-        <SectionTable
-          sections={sections}
-          setSections={updateSubjects}
-        />
-        <TeacherTable
-          teachers={teachers}
-          setTeachers={updateSubjects}
-        />
+      <div className={classes.wrapper}>
+        <Button
+          variant='contained'
+          color='secondary'
+          size='large'
+          className={classes.genButton}
+          onClick={generateButton}
+          disabled={!lectures.length || loading}
+        >
+          Generate Timetable
+        </Button>
+        {loading && (
+          <CircularProgress
+            color='secondary'
+            size={38}
+            className={classes.buttonProgress}
+          />
+        )}
       </div>
-      <div className={classes.cardHolder}>
-        <LectureInput
-          lectures={lectures}
-          setLectures={updateSubjects}
-          subjects={subjects}
-          sections={sections}
-          teachers={teachers}
-        />
-        <WorkingtimeInput
-          workingTime={workingTime}
-          setworkingTime={updateSubjects}
-        />
-      </div>
-      <div className={classes.cardHolder}>
-        <LectureTable
-          lectures={lectures}
-          setLectures={updateSubjects}
-        />
-        <WorkingtimeTable
-          workingTime={workingTime}
-          setworkingTime={updateSubjects}
-          
-        />
-      </div>
-      <Button
-        variant="contained"
-        color="secondary"
-        size="large"
-        className={classes.genButton}
-        onClick={generateButton}
-        disabled={!lectures.length}
-      >
-        Generate Timetable
-      </Button>
+      <GenerateTimetable timetable={timetable}/>
     </div>
   );
 };

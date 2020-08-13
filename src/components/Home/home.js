@@ -22,7 +22,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexFlow: 'row wrap',
     justifyContent: 'space-evenly',
-    marginTop: 10,
+    marginTop: 70,
+    [theme.breakpoints.up('sm')]: {
+      marginTop: 80,
+    },
   },
   lectures: {
     width: '100%',
@@ -39,6 +42,20 @@ const useStyles = makeStyles((theme) => ({
   buttonProgress: {
     position: 'absolute',
     top: '3%',
+  },
+  footer: {
+    marginBottom: 30,
+    fontSize: '1.2rem',
+    letterSpacing: '0.3rem',
+    textAlign: 'center',
+    // textShadow: '0 0 .5rem black',
+    color: 'white',
+    '& a': {
+      color: '#791E94',
+      '&:hover': {
+        fontWeight: 700,
+      },
+    },
   },
 }));
 
@@ -170,6 +187,7 @@ const Home = () => {
   // console.log(lectures);
   // console.log(workingTime);
   console.log(timetable);
+
   return (
     <div>
       <PrimaryAppBar />
@@ -262,7 +280,11 @@ const Home = () => {
           />
         )}
       </div>
-      <GenerateTimetable timetable={timetable}/>
+      <GenerateTimetable timetable={timetable} />
+      <div className={classes.footer}>
+        Made By <a href='https://github.com/justEhmadSaeed'>Ehmad Saeed</a> &{' '}
+        <a href='https://github.com/Mehr-un-nisa'>Mehrunnisa</a>
+      </div>
     </div>
   );
 };

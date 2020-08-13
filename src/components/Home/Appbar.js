@@ -1,34 +1,33 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import firebase from "firebase";
-
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import firebase from 'firebase';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
   title: {
-    display: "block",
+    display: 'block',
   },
   sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
     },
   },
   sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
     },
   },
 }));
@@ -50,24 +49,24 @@ export default function PrimaryAppBar() {
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
         <IconButton
-          aria-label="Logged In User"
-          aria-haspopup="true"
-          color="inherit"
+          aria-label='Logged In User'
+          aria-haspopup='true'
+          color='inherit'
         >
           <AccountCircle />
         </IconButton>
         <p>
           {firebase.auth().currentUser
             ? firebase.auth().currentUser.displayName
-            : "Ehmad"}
+            : 'Guest'}
         </p>
       </MenuItem>
       <MenuItem
@@ -75,7 +74,7 @@ export default function PrimaryAppBar() {
           firebase.auth().signOut();
         }}
       >
-        <IconButton aria-label="SignOut" color="inherit">
+        <IconButton aria-label='SignOut' color='inherit'>
           <ExitToAppIcon />
         </IconButton>
         <p>Sign Out</p>
@@ -85,46 +84,46 @@ export default function PrimaryAppBar() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position='fixed'>
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography className={classes.title} variant='h6' noWrap>
             Activity Scheduler
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton
-              edge="end"
-              aria-label="Logged In User"
-              aria-haspopup="true"
-              color="inherit"
+              edge='end'
+              aria-label='Logged In User'
+              aria-haspopup='true'
+              color='inherit'
             >
               <AccountCircle />
-              <div className="f3">
+              <div className='f3'>
                 {firebase.auth().currentUser
                   ? firebase.auth().currentUser.displayName
-                  : "Ehmad"}
+                  : 'Ehmad'}
               </div>
             </IconButton>
             <IconButton
-              edge="end"
-              aria-label="Sign Out"
-              aria-haspopup="true"
+              edge='end'
+              aria-label='Sign Out'
+              aria-haspopup='true'
               onClick={() => {
                 firebase.auth().signOut();
-                console.log("signout");
+                console.log('signout');
               }}
-              color="inherit"
+              color='inherit'
             >
               <ExitToAppIcon />
-              <div className="f5">Sign Out</div>
+              <div className='f5'>Sign Out</div>
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
-              aria-label="show more"
-              aria-haspopup="true"
+              aria-label='show more'
+              aria-haspopup='true'
               onClick={handleMobileMenuOpen}
-              color="inherit"
+              color='inherit'
             >
               <MoreIcon />
             </IconButton>

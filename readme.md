@@ -3,15 +3,27 @@
 <h1>Timetable Scheduling</h1>
 </div>
 
-## 🎯Plan of Action
+## 🎯 Plan of Action
 
-- There should not be more than one class of teacher at the same time.
+The project deals with specific constraints:
+
+- There should be no more than one class of teachers at the same time.
+
 - There should be only one teacher assigned to each class during a lecture.
+
 - A teacher cannot teach more than one subject to a class.
-- Each subject can only be assigned to a class at most one time.
+
+- Each subject can be assigned to a class at most one time.
+
 - Credit hours cannot exceed contact hours.
 
-## Tools and Technologies
+- There can be only one lecture of a teacher/ subject in a class per day.
+
+- The lecture arrangement feature is available to let users decide how multiple lectures of a subject can appear in the timetable.
+
+- The user can define maximum lectures per day and the working days per week.
+
+## 🛠 Tools and Technologies
 
 - **Windows OS:** Windows OS is used for the development of this project due to its user-friendly interface.
 
@@ -31,7 +43,7 @@
 
 - **Material UI:** Material UI is used as the standard for the frontend of the project due to its premium look and simplicity.
 
-## Installation Guidelines
+## 🚀 Installation Guidelines
 
 ### **Prerequisite**
 
@@ -50,6 +62,7 @@ git clone https://github.com/justEhmadSaeed/CS311S20PID08.git
 **Step 2. Open Two Terminals:**
 
 - Set path of the first terminal to the root of the project folder, that would have /CS311S20PID08 at the end of the path. This terminal will operate the **frontend** of the project.
+
 - For the second terminal, set its path to the **backend** folder, located in the root directory, or you can initialize its path from the root directory, which will have the same path as of the first terminal and then you can run the following command to set its path to the backend folder.
 
 ```

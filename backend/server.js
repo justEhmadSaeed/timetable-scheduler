@@ -3,7 +3,6 @@ const admin = require('firebase-admin');
 const serviceAccount = require('./constants/serviceAccountKey.json');
 const docs = require('./constants/docs');
 const cors = require('cors');
-const { sections } = require('./constants/docs');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -16,19 +15,30 @@ const db = admin.firestore();
 
 app.post('/generate', async (req, res) => {
   const userID = req.body['userID'];
+  if (!userID) {
+    res.send(401);
+    return;
+  }
+
   const collection = db.collection(userID);
+  console.log(collection);
   const snapshot = await collection.get();
+  console.log(snapshot);
 
   let l;
   let subjects;
   let workingTime;
 
-  if (!snapshot.empty)
-    snapshot.forEach((snap) => {
-      if (snap.id === docs.lectures) l = Object.values(snap.data());
-      else if (snap.id === docs.subjects) subjects = Object.values(snap.data());
-      else if (snap.id === docs.workingTime) workingTime = snap.data();
-    });
+  if (snapshot.empty || snapshot.size === 0) {
+    res.send(401);
+    return;
+  }
+
+  snapshot.forEach((snap) => {
+    if (snap.id === docs.lectures) l = Object.values(snap.data());
+    else if (snap.id === docs.subjects) subjects = Object.values(snap.data());
+    else if (snap.id === docs.workingTime) workingTime = snap.data();
+  });
 
   const t = l
     .map((e) => e[0])

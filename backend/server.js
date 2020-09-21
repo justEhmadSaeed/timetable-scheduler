@@ -3,6 +3,7 @@ const admin = require('firebase-admin');
 const serviceAccount = require('./constants/serviceAccountKey.json');
 const docs = require('./constants/docs');
 const cors = require('cors');
+let port = process.env.PORT || 3001;
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -107,7 +108,7 @@ app.post('/generate', async (req, res) => {
   res.send(sections);
 });
 
-app.listen(3001);
+app.listen(port);
 
 const Scheduling = (teacherLec, sections, period) => {
   const final_tt = ThreeDarray(sections.length, period.d, period.p);

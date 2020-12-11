@@ -1,6 +1,6 @@
 <div align="center">
 <img src="https://user-images.githubusercontent.com/46846821/89666520-f195cb80-d8f3-11ea-80bb-f9d5137c6c6c.png" alt ="Activity Scheduing">
-<h1>Timetable Scheduling</h1>
+<h1>Timetable Scheduler</h1>
 </div>
 
 ## 🎯 Plan of Action

@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "68df5ec5e60a95c748ce9bfce1d56611",
+    "revision": "481a222058f13e8b147642c4229b2762",
     "url": "/timetable-scheduler/index.html"
   },
   {

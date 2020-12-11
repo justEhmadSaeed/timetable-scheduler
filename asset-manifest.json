@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/CS311S20PID08/static/css/main.7f40d95c.chunk.css",
-    "main.js": "/CS311S20PID08/static/js/main.f54452c0.chunk.js",
-    "main.js.map": "/CS311S20PID08/static/js/main.f54452c0.chunk.js.map",
-    "runtime-main.js": "/CS311S20PID08/static/js/runtime-main.e176d59b.js",
-    "runtime-main.js.map": "/CS311S20PID08/static/js/runtime-main.e176d59b.js.map",
-    "static/css/2.3c03f26f.chunk.css": "/CS311S20PID08/static/css/2.3c03f26f.chunk.css",
-    "static/js/2.0a419c1c.chunk.js": "/CS311S20PID08/static/js/2.0a419c1c.chunk.js",
-    "static/js/2.0a419c1c.chunk.js.map": "/CS311S20PID08/static/js/2.0a419c1c.chunk.js.map",
-    "index.html": "/CS311S20PID08/index.html",
-    "precache-manifest.bdd16d9d28a578740bb2989783036e4e.js": "/CS311S20PID08/precache-manifest.bdd16d9d28a578740bb2989783036e4e.js",
-    "service-worker.js": "/CS311S20PID08/service-worker.js",
-    "static/css/2.3c03f26f.chunk.css.map": "/CS311S20PID08/static/css/2.3c03f26f.chunk.css.map",
-    "static/css/main.7f40d95c.chunk.css.map": "/CS311S20PID08/static/css/main.7f40d95c.chunk.css.map",
-    "static/js/2.0a419c1c.chunk.js.LICENSE.txt": "/CS311S20PID08/static/js/2.0a419c1c.chunk.js.LICENSE.txt",
-    "static/media/activity.png": "/CS311S20PID08/static/media/activity.f54fa458.png"
+    "main.css": "/timetable-scheduler/static/css/main.10e6f0b6.chunk.css",
+    "main.js": "/timetable-scheduler/static/js/main.88eadc1b.chunk.js",
+    "main.js.map": "/timetable-scheduler/static/js/main.88eadc1b.chunk.js.map",
+    "runtime-main.js": "/timetable-scheduler/static/js/runtime-main.e4e00c59.js",
+    "runtime-main.js.map": "/timetable-scheduler/static/js/runtime-main.e4e00c59.js.map",
+    "static/css/2.3c03f26f.chunk.css": "/timetable-scheduler/static/css/2.3c03f26f.chunk.css",
+    "static/js/2.37a04290.chunk.js": "/timetable-scheduler/static/js/2.37a04290.chunk.js",
+    "static/js/2.37a04290.chunk.js.map": "/timetable-scheduler/static/js/2.37a04290.chunk.js.map",
+    "index.html": "/timetable-scheduler/index.html",
+    "precache-manifest.2d50b09894dc78ee449f0031c154b92c.js": "/timetable-scheduler/precache-manifest.2d50b09894dc78ee449f0031c154b92c.js",
+    "service-worker.js": "/timetable-scheduler/service-worker.js",
+    "static/css/2.3c03f26f.chunk.css.map": "/timetable-scheduler/static/css/2.3c03f26f.chunk.css.map",
+    "static/css/main.10e6f0b6.chunk.css.map": "/timetable-scheduler/static/css/main.10e6f0b6.chunk.css.map",
+    "static/js/2.37a04290.chunk.js.LICENSE.txt": "/timetable-scheduler/static/js/2.37a04290.chunk.js.LICENSE.txt",
+    "static/media/activity.png": "/timetable-scheduler/static/media/activity.f54fa458.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.e176d59b.js",
+    "static/js/runtime-main.e4e00c59.js",
     "static/css/2.3c03f26f.chunk.css",
-    "static/js/2.0a419c1c.chunk.js",
-    "static/css/main.7f40d95c.chunk.css",
-    "static/js/main.f54452c0.chunk.js"
+    "static/js/2.37a04290.chunk.js",
+    "static/css/main.10e6f0b6.chunk.css",
+    "static/js/main.88eadc1b.chunk.js"
   ]
 }

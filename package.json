@@ -16,7 +16,7 @@
     "react-dom": "^16.13.1",
     "react-firebaseui": "^4.1.0",
     "react-particles-js": "^3.3.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^4.0.1",
     "react-tilt": "^0.1.4",
     "tachyons": "^4.12.0"
   },

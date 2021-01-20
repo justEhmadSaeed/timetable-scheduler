@@ -1,15 +1,15 @@
 import React, { useState } from "react"
 import "./App.css"
 import "tachyons"
-import Home from "./Home/home"
-import LoginScreen from "./LoginScreen"
+import LoginScreen from "./Pages/LoginScreen"
+import HomeScreen from "./Pages/HomeScreen"
 
 const App = () => {
 	const [isSigned, setIsSigned] = useState(false)
 
 	return (
 		<div className="App">
-			{!isSigned ? <LoginScreen setIsSigned={setIsSigned} /> : <Home />}
+			{!isSigned ? <LoginScreen setIsSigned={setIsSigned} /> : <HomeScreen />}
 		</div>
 	)
 }

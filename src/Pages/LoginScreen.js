@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 import firebase from "../firebase/firebase"
-import Logo from "./Logo/Logo"
+import Logo from "../components/Logo/Logo"
 import Particles from "react-particles-js"
 import Loader from "react-loader-spinner"
 

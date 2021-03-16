@@ -8,12 +8,12 @@
 
 # testing
 /coverage
-
 # production
 /build
 build
 # Firebase Config File
 firebase.js
+serviceAccountKey.json
 # misc
 .DS_Store
 .env.local

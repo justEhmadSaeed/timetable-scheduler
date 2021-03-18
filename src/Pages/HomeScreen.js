@@ -170,7 +170,7 @@ const HomeScreen = () => {
       body: JSON.stringify({ userID: firebase.auth().currentUser.uid }),
     };
     setloading(true);
-    fetch('https://activity-scheduling.herokuapp.com/generate', requestOptions)
+    fetch('/generate', requestOptions)
       .then((response) => response.json())
       .then(async () => {
         fetchTimetable();

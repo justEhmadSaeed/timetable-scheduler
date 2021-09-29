@@ -16,6 +16,6 @@
     "firebase-admin": "^9.4.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.13"
   }
 }

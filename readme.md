@@ -96,3 +96,4 @@ In case of any query regarding the project installation, feel free to contact:
 ## 🔑 License & Conduct
 
 - It is © [MIT Licensed](LICENSE)
+- [Code of Conduct](CODE_OF_CONDUCT.md)

@@ -28,21 +28,27 @@ The project deals with specific constraints:
 
 ## 🚀 Installation Guidelines
 
-### **Prerequisite**
+### Prerequisite
 
 Make sure you have the following tools, installed on your system.
 
 - [git](https://git-scm.com/downloads)
 - [node/ npm](https://nodejs.org/en/download/)
 
-**Step 1. Clone the repository:**
+### Clone the repository:
+
 Open gitbash in your desired directory and run the following command:
 
 ```
 git clone REPO_URL
 ```
 
-**Step 2. Open Two Terminals:**
+### Set Project Configurations:
+
+- Make an account on firebase and fill up the .env variables on the frontend.
+- Also, download serviceAccountKey.json from firebase project and add it in the `backend/constants` directory.
+
+### Open Two Terminals:
 
 - Set path of the first terminal to the root of the project folder, that would have /CS311S20PID08 at the end of the path. This terminal will operate the **frontend** of the project.
 
@@ -52,7 +58,7 @@ git clone REPO_URL
 cd backend
 ```
 
-**Step 3. Install the required npm Packages/ dependencies:**
+### Install the required npm Packages/ dependencies:
 
 To install the dependencies of both frontend and backend, run the following command in both terminals:
 
@@ -65,7 +71,7 @@ yarn
 
 Make sure you run the above-mentioned command for both terminals without any errors.
 
-**Step 4. Run the project:**
+### Run the project:
 
 Now assuming that your system has all the dependencies required to run the project, it is now set to run over your system.
 

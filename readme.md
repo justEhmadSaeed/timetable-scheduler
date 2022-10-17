@@ -35,9 +35,11 @@ Make sure you have the following tools, installed on your system.
 - [git](https://git-scm.com/downloads)
 - [node/ npm](https://nodejs.org/en/download/)
 
-### Clone the repository:
+### Fork/ Clone the repository:
 
-Open gitbash in your desired directory and run the following command:
+Click on the fork button in the top right corner or just [click this](https://github.com/justEhmadSaeed/timetable-scheduler/fork).
+Copy the URL from that green `code` button to clone the project.
+Open a terminal in your desired directory and run the following command with `REPO_URL` replaced by the link you just copied:
 
 ```
 git clone REPO_URL
